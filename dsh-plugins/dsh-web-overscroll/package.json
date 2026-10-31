@@ -1,0 +1,27 @@
+{
+  "name": "dsh-web-overscroll",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Keep the DSH web/desktop viewport from scroll-chaining: no root overscroll bounce, no document-level scrolling, while every inner scroller keeps working.",
+  "main": "lib/index.js",
+  "exports": {
+    ".": "./lib/index.js",
+    "./client": "./lib/client.js",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "lib/",
+    "cordis.patch.yml",
+    "README.md"
+  ],
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    },
+    "client": {
+      "platform": "web",
+      "immediately": true
+    }
+  }
+}

@@ -1,0 +1,4 @@
+- insert:
+    - name: keep-me
+      config: { secret: fixture-only }
+# user edit after install

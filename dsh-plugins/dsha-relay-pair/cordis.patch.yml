@@ -1,0 +1,45 @@
+# dsha-relay-pair 的 bundle 补丁：把手机端的中继配对插件插进 profile 的插件名册。
+#
+# 安装：dsh plugin add <本目录>（或 dsha-plugin install <path>），bundle 补丁会自动应用，
+# 所以**不要**再往 profile patch 里手写同一行 —— 重复 id 会让 loader 崩。
+#
+# 和桌面端 dsh-relay-pair 的关系：两者协议完全一致，一个设备只能装一个，
+# 否则同一个 $DSH_HOME 里会有两条心跳、两条长轮询抢同一批任务。
+- insert:
+    - id: dsha-relay-pair
+      name: 'dsha-relay-pair'
+      config:
+        # 中继地址。手机端写公网地址（http 或 https 都行，Node 的 fetch 不认自签证书时用 http）。
+        relayUrl: ''
+        # 中继网页上显示的设备名。留空 = DSHA@<hostname>。
+        deviceName: ''
+        # 手机端默认 mobile；写死 desktop 只在把本包装到电脑上做调试时有意义。
+        deviceKind: mobile
+        # 插件加载时若已有配对凭据，自动开始心跳与长轮询。
+        autostart: true
+        # 中继把任务派到本机时，投进最近活跃的那个会话。
+        localExec: true
+        # 心跳间隔（秒）。手机在后台被系统冻住时心跳自然会停，中继按 deviceOfflineAfter 判离线。
+        heartbeatSeconds: 20
+        # 长轮询窗口（秒）。中继最多把请求挂这么久，所以它决定「任务最快多久到手」。
+        pollSeconds: 25
+        # 空转多久（秒）之后开始退避：没有任务的手机不该一直满速轮询耗电。
+        idleBackoffAfterSeconds: 180
+        # 退避上限（秒）。一旦收到任务/隧道/心跳恢复，立刻回到 pollSeconds。
+        idleBackoffMaxSeconds: 120
+        # manual = 只有 relay_sync_task 才上传本地历史（默认，隐私优先）。
+        syncMode: manual
+        # 任务到手时用 3090 桥弹一条系统通知（App 在后台也能看见）。
+        notifyOnTask: true
+        # 结果回传后弹通知（手机上不盯屏幕也知道跑完了）。
+        notifyOnResult: true
+        # 任务到手时震一下。
+        vibrateOnTask: false
+        # DSHA 设备桥地址与凭据位置；一般不用改。
+        bridgeUrl: 'http://127.0.0.1:3090'
+        bridgeTokenPath: '/root/.dsh/.bridge_token'
+        # DSHA 的包名（如 com.deepseek.dsha）。填了之后，中继网页上的「打开手机 DSHA」
+        # 会走 3090 桥的 /app/launch 把 App 拉起来。留空 = 不接管。
+        appPackage: ''
+        # 也可以改填深链（如 dsha://chat），走 /app/open 打开。appPackage 优先。
+        appUrl: ''

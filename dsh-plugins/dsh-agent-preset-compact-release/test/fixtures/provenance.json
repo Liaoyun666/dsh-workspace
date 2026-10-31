@@ -1,0 +1,55 @@
+{
+  "source": "E:/工作区/dsh-agent-preset-compact/test/fixtures/local",
+  "fixture": true,
+  "files": [
+    {
+      "name": "frontend.css",
+      "source": "E:\\工作区\\dsh-agent-preset-compact\\test\\fixtures\\local\\frontend.css",
+      "sha256": "2412389d14707cc10df9b3fa83893af96c5f2568da78029e1ba64123fb0c2b82",
+      "bytes": 77343
+    },
+    {
+      "name": "seed-test.js",
+      "source": "E:\\工作区\\dsh-agent-preset-compact\\test\\fixtures\\local\\seed-test.js",
+      "sha256": "2d15db030896681bfac8fd0e5bd1701077f263fd774443a32bbe44bb78883d19",
+      "bytes": 939208
+    },
+    {
+      "name": "vendor-DcuzkuQH.js",
+      "source": "E:\\工作区\\dsh-agent-preset-compact\\test\\fixtures\\local\\vendor-DcuzkuQH.js",
+      "sha256": "c14ba1089d78f48b8959a7bc42c9013b4a57aa4122e053d54f74c0a4d1d156a7",
+      "bytes": 741114
+    },
+    {
+      "name": "dsh-client-ui-agent-preset/lib/client.js",
+      "source": "E:\\工作区\\dsh-agent-preset-compact\\test\\fixtures\\local\\dsh-client-ui-agent-preset\\lib\\client.js",
+      "sha256": "ea57f30073b48c4875e236f0a29e7241cafb0dfd6418fa079f5db1fcfd51795c",
+      "bytes": 111739
+    },
+    {
+      "name": "dsh-client-ui-agent-preset/package.json",
+      "source": "E:\\工作区\\dsh-agent-preset-compact\\test\\fixtures\\local\\dsh-client-ui-agent-preset\\package.json",
+      "sha256": "6dc654e064de44c8e8ec0218cb9232c44bfea47a50df4ac7fff17b0588446f86",
+      "bytes": 2535
+    },
+    {
+      "name": "dsh-package.json",
+      "source": "E:\\工作区\\dsh-agent-preset-compact\\test\\fixtures\\local\\dsh-package.json",
+      "sha256": "b67a65b9719272b2eb54093b63c121d05907da062a1393e8c9f871e1cd18f94e",
+      "bytes": 17100
+    },
+    {
+      "name": "theme-client.js",
+      "source": "E:/Deepseek/resources/app.asar!/dsh/node_modules/@deepseek-ai/dsh-client-ui-theme/lib/client.js",
+      "sha256": "4a6c83650c063f639ff468d766c794c82998c411ffb7dcc7ebb282e1f61923d0",
+      "bytes": 120426
+    }
+  ],
+  "seed": {
+    "officialSource": "E:\\工作区\\dsh-agent-preset-compact\\test\\fixtures\\local\\frontend.js",
+    "officialSha256": "4bc914bfbb6adbdd63953a29f63835eb7127defd2a973149d64cdab489f1a9a5",
+    "commonPrefixCharacters": 920384,
+    "officialSuffix": "try{const e=document.getElementById(\"root\");if(e===null)throw new Error(\"web app: missing #root\");const t=new TZ(e);if(Ms!==void 0){const r=globalThis.__DSH_BOOT_READY__;if(r===void 0)throw new Error(\"desktop web: boot readiness is missing\");Ms.ready().then(async({injections:i,streamBaseUrl:n})=>{const s=globalThis;s.__DSH_TRANSPORT__={ownsHost:!0,streamBaseUrl:n},await PZ(i,l=>new Promise((d,h)=>{const m=document.createElement(\"script\");m.src=l,m.onload=()=>{d()},m.onerror=()=>{h(new Error(`desktop web: failed to load ${l}`))},document.head.append(m)})),r.resolve()}).catch(i=>{r.reject(i)})}t.run(Ms===void 0?void 0:o7)}catch(e){o7(e)}\n//# sourceMappingURL=index-CN7NIWNw.js.map\n",
+    "fixtureSuffix": ";window.__TEST_SEEDS__=SZ();"
+  }
+}

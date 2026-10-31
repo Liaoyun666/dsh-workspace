@@ -1,0 +1,228 @@
+{
+  "persona_id": {
+    "description": "用哪个人格说话（留空用内置大肥鱼人设）",
+    "type": "string",
+    "default": "大肥鱼"
+  },
+  "auto_min_hours": {
+    "description": "自动刷最小间隔（小时）",
+    "type": "int",
+    "default": 2
+  },
+  "auto_max_hours": {
+    "description": "自动刷最大间隔（小时），每次在这两数之间随机",
+    "type": "int",
+    "default": 4
+  },
+  "auto_targets": {
+    "description": "自动推送的会话列表（unified_msg_origin）；留空用最近一次 /刷b站 的会话",
+    "type": "list",
+    "default": []
+  },
+  "auto_target_mode": {
+    "description": "有多个目标时：random=每轮随机挑一个，all=全都发",
+    "type": "string",
+    "default": "random"
+  },
+  "max_per_day": {
+    "description": "每天最多自动刷几条",
+    "type": "int",
+    "default": 6
+  },
+  "quiet_start": {
+    "description": "安静时段开始（小时 0-23）",
+    "type": "int",
+    "default": 1
+  },
+  "quiet_end": {
+    "description": "安静时段结束（小时 0-23）",
+    "type": "int",
+    "default": 8
+  },
+  "min_duration": {
+    "description": "最短视频时长（秒）",
+    "type": "int",
+    "default": 60
+  },
+  "max_duration": {
+    "description": "最长视频时长（秒）",
+    "type": "int",
+    "default": 3600
+  },
+  "send_cover": {
+    "description": "是否附上视频封面图",
+    "type": "bool",
+    "default": true
+  },
+  "exclude_keywords": {
+    "description": "标题含这些词就跳过",
+    "type": "list",
+    "default": [
+      "直播",
+      "预告",
+      "切片"
+    ]
+  },
+  "extra_prompt": {
+    "description": "额外要求（追加给模型）",
+    "type": "string",
+    "default": ""
+  },
+  "auto_dynamic": {
+    "description": "每天自动发一条 B 站动态（需要先 /b登录 登小号）",
+    "type": "bool",
+    "default": false
+  },
+  "auto_dynamic_hour": {
+    "description": "自动动态的时间（小时 0-23）",
+    "type": "int",
+    "default": 20
+  },
+  "max_comments_per_day": {
+    "description": "每天最多评论几条（防小号被限）",
+    "type": "int",
+    "default": 10
+  },
+  "max_danmaku_per_day": {
+    "description": "每天最多发几条弹幕（防小号被限）",
+    "type": "int",
+    "default": 20
+  },
+  "auto_danmaku": {
+    "description": "刷完视频自动飘一条弹幕（需要登录）",
+    "type": "bool",
+    "default": true
+  },
+  "auto_danmaku_prob": {
+    "description": "每条视频飘弹幕的概率（0~1）",
+    "type": "float",
+    "default": 0.6
+  },
+  "auto_comment": {
+    "description": "刷完视频自动留一条评论（需要登录）",
+    "type": "bool",
+    "default": true
+  },
+  "auto_comment_prob": {
+    "description": "每条视频留评论的概率（0~1，建议低于弹幕）",
+    "type": "float",
+    "default": 0.35
+  },
+  "video_enable": {
+    "description": "允许用 /b投稿 自己录视频投稿吗",
+    "type": "bool",
+    "default": true
+  },
+  "video_need_confirm": {
+    "description": "投稿前先发给主人看一眼、等「/b投稿确认」",
+    "type": "bool",
+    "default": true
+  },
+  "video_voice": {
+    "description": "配音用的声音（edge-tts，例如 zh-CN-XiaoyiNeural）",
+    "type": "string",
+    "default": "zh-CN-XiaoyiNeural"
+  },
+  "video_rate": {
+    "description": "配音语速（例如 +8%）",
+    "type": "string",
+    "default": "+8%"
+  },
+  "video_share_dir": {
+    "description": "AstrBot 和 NapCat 都能读到的共享目录（发视频预览用，两个容器都要挂同一个宿主目录）",
+    "type": "string",
+    "default": "/share/dafeiyu-video"
+  },
+  "video_tid": {
+    "description": "投稿分区（160=生活，211=美食，21=日常）",
+    "type": "int",
+    "default": 160
+  },
+  "video_max_per_day": {
+    "description": "一天最多投几条视频",
+    "type": "int",
+    "default": 2
+  },
+  "owner_ids": {
+    "description": "主人的 QQ 号列表（只有他们能用自然语言让她发动态/评论/弹幕）",
+    "type": "list",
+    "default": [
+      "100000000"
+    ]
+  },
+  "dsh_enable": {
+    "description": "启用「本机 DSH 工作室」：把创作任务排进队列，让主人电脑上的 DSH 干活",
+    "type": "bool",
+    "default": true
+  },
+  "dsh_jobs_dir": {
+    "description": "工作室队列目录（容器内的路径，对应宿主的 astrbot-data/data/dsh-jobs）",
+    "type": "string",
+    "default": "/AstrBot/data/dsh-jobs"
+  },
+  "video_engine": {
+    "description": "视频投稿用谁做：dsh=本机工作室（画面更好），local=这边自己合成（edge-tts + ffmpeg）",
+    "type": "string",
+    "default": "dsh"
+  },
+  "video_auto": {
+    "description": "每日自动投稿：每天自己拍 1~2 条投上去，不用主人催",
+    "type": "bool",
+    "default": true
+  },
+  "video_auto_per_day": {
+    "description": "自动投稿每天几条（1 或 2）",
+    "type": "int",
+    "default": 2
+  },
+  "video_auto_start_hour": {
+    "description": "自动投稿的最早时间（小时，24 小时制）",
+    "type": "int",
+    "default": 10
+  },
+  "video_auto_end_hour": {
+    "description": "自动投稿的最晚时间（小时，24 小时制）",
+    "type": "int",
+    "default": 23
+  },
+  "dsh_video_confirm": {
+    "description": "工作室拍完先给主人看一眼、等 /b投稿确认（关掉就是直接投）",
+    "type": "bool",
+    "default": false
+  },
+  "video_per_day_min": {
+    "description": "每天自动拍片最少几条（1~3）",
+    "type": "int",
+    "default": 1
+  },
+  "video_per_day_max": {
+    "description": "每天自动拍片最多几条（1~3，每天在这个范围里随机）",
+    "type": "int",
+    "default": 3
+  },
+  "video_review_timeout_hours": {
+    "description": "片子做好后等主人点头最多几小时，超时自动撤",
+    "type": "int",
+    "default": 24
+  },
+  "relay_url": {
+    "description": "中继台地址（视频审核网页在这里）",
+    "type": "string",
+    "default": "http://203.0.113.20"
+  },
+  "relay_token": {
+    "description": "中继网页令牌（审核接口用）",
+    "type": "string",
+    "default": ""
+  },
+  "relay_video_enable": {
+    "description": "把待审视频推到中继网页上，让主人也能在网页批",
+    "type": "bool",
+    "default": true
+  },
+  "video_dry_run": {
+    "description": "干跑模式：只走审核流程不真上传（测试用，平时保持关闭）",
+    "type": "bool",
+    "default": false
+  }
+}

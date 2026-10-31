@@ -1,0 +1,6 @@
+{
+  "name": "antigravity-zh-cn",
+  "description": "Antigravity 简体中文界面：通过后台 Sidecar 实时把应用界面翻译为简体中文，并让智能体默认使用中文交流。",
+  "version": "1.0.0",
+  "displayName": "简体中文界面"
+}

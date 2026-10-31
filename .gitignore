@@ -1,0 +1,62 @@
+# ============================================================
+# E:\工作区 的 .gitignore
+# 放进 GitHub 的只有源码 / 文档 / 小资源；大件与凭据留在本机。
+# 规则见 AGENTS.md「哪些东西可以删，哪些死也不能删」。
+# ============================================================
+
+# ---- 快照 / 归档 / 临时 ----
+# 肥鱼之家的 job 目录是干活现场，成品已回传云端，不进仓库
+/肥鱼之家/jobs/
+.snapshots/
+90-归档/
+tmp/
+.hc2/
+*.log
+!other-apps/antigravity-zh-cn/**/*.md
+
+# ---- 依赖 / 虚拟环境 / 缓存 ----
+node_modules/
+.venv/
+.vendor/
+astrbot-venv*/
+astrbot-home/
+napcat/
+__pycache__/
+*.pyc
+*.pyo
+.pytest_cache/
+*.tsbuildinfo
+
+# ---- 大二进制 / 安装包 / 构建产物 ----
+vendor/
+dist/
+*.exe
+*.zip
+*.7z
+*.msi
+*.dmg
+*.pdb
+*.blend1
+*.tgz
+*.tar.gz
+*.blend
+
+# ---- 本机符号链接（指向 E:\blender）----
+/blender-mcp
+/convenience_store
+
+# ---- 各自已有独立 GitHub 仓库的目录，不在本仓库重复 ----
+/dsh-relay/
+/dsha-native-tools/
+/dsha-capability-map/
+/dsh-android-portability/
+/dsh-workbuddy-android/
+/dsh-plugins/dsh-liangwen-tide/
+
+# ---- 含本机凭据 / 运行时状态，不外传 ----
+other-apps/dafeiyu-qq/
+Unity_v*.alf
+config.local.json
+relay-device*.json
+id_ed25519*
+*.pem

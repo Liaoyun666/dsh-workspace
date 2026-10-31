@@ -1,0 +1,37 @@
+{
+  "enabled": {
+    "description": "启用消息合并",
+    "type": "bool",
+    "default": true
+  },
+  "debounce_seconds": {
+    "description": "最后一条消息之后等多久（秒）再合并回话",
+    "type": "float",
+    "default": 1
+  },
+  "reset_after_seconds": {
+    "description": "两条消息隔超过这么久就不算同一句（秒）",
+    "type": "float",
+    "default": 15
+  },
+  "max_parts": {
+    "description": "一次最多合并几条",
+    "type": "int",
+    "default": 12
+  },
+  "merge_private": {
+    "description": "私聊里也合并",
+    "type": "bool",
+    "default": true
+  },
+  "merge_group": {
+    "description": "群里被她被叫到时连发的消息也合并",
+    "type": "bool",
+    "default": true
+  },
+  "direct_chars": {
+    "description": "每段都不超过这个字数就直接粘成一句（不加换行）",
+    "type": "int",
+    "default": 2
+  }
+}

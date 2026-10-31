@@ -1,0 +1,9 @@
+- insert:
+    - name: keep-me
+      config: { secret: fixture-only }
+# BEGIN dsh-agent-preset-compact managed v1
+- insert:
+    - id: agent-preset-compact
+      name: dsh-agent-preset-compact
+# END dsh-agent-preset-compact managed v1
+# later user edit

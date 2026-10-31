@@ -1,0 +1,4 @@
+# dsh-font-lab：字体实验室面板（本地插件）
+- insert:
+    - id: font-lab
+      name: dsh-font-lab

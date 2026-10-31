@@ -1,0 +1,32 @@
+{
+  "name": "dsh-anim-pack",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "341 种代码动画风格提示词 / 193 张参考静帧的本地素材包：检索、读提示词、看静帧、导出到工作目录。素材来源 XiaoyeCodes/code-animation-prompts（原素材整理：俯仰观照）。",
+  "main": "lib/index.js",
+  "exports": {
+    ".": "./lib/index.js",
+    "./catalog": "./lib/catalog.js",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "lib/",
+    "assets/",
+    "docs/",
+    "cordis.patch.yml",
+    "README.md"
+  ],
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    }
+  },
+  "peerDependencies": {
+    "cordis": "*"
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "license": "MIT"
+}

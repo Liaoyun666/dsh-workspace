@@ -1,0 +1,193 @@
+[
+  {
+    "model": "hy4-preview",
+    "rate": 0.29,
+    "a": 0.000984246,
+    "b": 0.000492917,
+    "outPerCredit": 3503,
+    "inPerCredit": 6996,
+    "tokensPerCredit": 4944.1,
+    "worstRelativeError": 0.0102,
+    "probes": 3
+  },
+  {
+    "model": "hy3",
+    "rate": 0,
+    "free": true
+  },
+  {
+    "model": "hy3-x",
+    "rate": 0.05,
+    "a": 0.00199484,
+    "b": 0.00034237,
+    "outPerCredit": 10030,
+    "inPerCredit": 58420,
+    "tokensPerCredit": 19412,
+    "worstRelativeError": 0.00176,
+    "probes": 3
+  },
+  {
+    "model": "step-5-preview",
+    "rate": 0,
+    "free": true
+  },
+  {
+    "model": "space-bunny",
+    "rate": 0.08,
+    "a": 0.000735159,
+    "b": 0.000187341,
+    "outPerCredit": 17000,
+    "inPerCredit": 66720,
+    "tokensPerCredit": 30092,
+    "worstRelativeError": 0.00915,
+    "probes": 3
+  },
+  {
+    "model": "deepseek-v4.1-flash",
+    "rate": 0.11,
+    "a": 0.000532081,
+    "b": 0.000129795,
+    "outPerCredit": 17090,
+    "inPerCredit": 70040,
+    "tokensPerCredit": 30582,
+    "worstRelativeError": 0.00696,
+    "probes": 3
+  },
+  {
+    "model": "glm-5.3",
+    "rate": 0.69,
+    "a": 0.000811883,
+    "b": 0.000232374,
+    "outPerCredit": 1785,
+    "inPerCredit": 6237,
+    "tokensPerCredit": 3060,
+    "worstRelativeError": 0.0179,
+    "probes": 3
+  },
+  {
+    "model": "glm-5.3-flash",
+    "rate": 0.08,
+    "a": 0.000631008,
+    "b": 0.00018474,
+    "outPerCredit": 19810,
+    "inPerCredit": 67660,
+    "tokensPerCredit": 33736,
+    "worstRelativeError": 0.039,
+    "probes": 3
+  },
+  {
+    "model": "glm-5.2",
+    "rate": 0.79,
+    "a": 0.0007075,
+    "b": 0.000201728,
+    "outPerCredit": 1789,
+    "inPerCredit": 6275,
+    "tokensPerCredit": 3070.3,
+    "worstRelativeError": 0.0237,
+    "probes": 3
+  },
+  {
+    "model": "glm-5.1",
+    "rate": 0.79,
+    "error": "insufficient"
+  },
+  {
+    "model": "glm-5v-turbo",
+    "rate": 0.71,
+    "a": 0.000789865,
+    "b": 0.000211431,
+    "outPerCredit": 1783,
+    "inPerCredit": 6662,
+    "tokensPerCredit": 3114.4,
+    "worstRelativeError": 0.0177,
+    "probes": 3
+  },
+  {
+    "model": "minimax-m3.1-flash",
+    "rate": 0.08,
+    "a": 0.00141848,
+    "b": 0.00035517,
+    "outPerCredit": 8812,
+    "inPerCredit": 35190,
+    "tokensPerCredit": 15668,
+    "worstRelativeError": 0.0349,
+    "probes": 3
+  },
+  {
+    "model": "minimax-m3",
+    "rate": 0.25,
+    "a": 0.000918264,
+    "b": 0.000236911,
+    "outPerCredit": 4356,
+    "inPerCredit": 16880,
+    "tokensPerCredit": 7684.1,
+    "worstRelativeError": 0.0117,
+    "probes": 3
+  },
+  {
+    "model": "minimax-m2.7",
+    "rate": 0.19,
+    "a": 0.000946343,
+    "b": 0.000238845,
+    "outPerCredit": 5562,
+    "inPerCredit": 22040,
+    "tokensPerCredit": 9867.6,
+    "worstRelativeError": 0.00847,
+    "probes": 3
+  },
+  {
+    "model": "kimi-k3.1-pro",
+    "rate": 0.97,
+    "a": 0.00169888,
+    "b": 0.000324821,
+    "outPerCredit": 606.8,
+    "inPerCredit": 3174,
+    "tokensPerCredit": 1149.5,
+    "worstRelativeError": 0.000571,
+    "probes": 3
+  },
+  {
+    "model": "kimi-k3-1",
+    "rate": 1.62,
+    "a": 0.00149528,
+    "b": 0.000300946,
+    "outPerCredit": 412.8,
+    "inPerCredit": 2051,
+    "tokensPerCredit": 773.4,
+    "worstRelativeError": 0.00551,
+    "probes": 3
+  },
+  {
+    "model": "kimi-k2.8-preview",
+    "rate": 0.77,
+    "a": 0.000848385,
+    "b": 0.000204803,
+    "outPerCredit": 1531,
+    "inPerCredit": 6341,
+    "tokensPerCredit": 2747.3,
+    "worstRelativeError": 0.0211,
+    "probes": 3
+  },
+  {
+    "model": "deepseek-v4-pro",
+    "rate": 0.51,
+    "a": 0.000754692,
+    "b": 0.000251997,
+    "outPerCredit": 2598,
+    "inPerCredit": 7781,
+    "tokensPerCredit": 4250.8,
+    "worstRelativeError": 0.0344,
+    "probes": 3
+  },
+  {
+    "model": "mimo-v2.6-pro",
+    "rate": 0.13,
+    "a": 0.00132426,
+    "b": 0.000659022,
+    "outPerCredit": 5809,
+    "inPerCredit": 11670,
+    "tokensPerCredit": 8218.6,
+    "worstRelativeError": 0.0449,
+    "probes": 3
+  }
+]

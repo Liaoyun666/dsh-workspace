@@ -1,0 +1,68 @@
+{
+  "name": "dsh-writing-preset",
+  "version": "1.0.0",
+  "description": "DeepSeek Harness 写作 Agent 预设：中文写作人设 + 写作技能 + 检索与文档交付工具。A writing agent preset for the DeepSeek Harness Web GUI.",
+  "author": "ZF",
+  "type": "module",
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    }
+  },
+  "files": [
+    "cordis.patch.yml",
+    "skills",
+    "tools",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "install:preset": "node tools/install.mjs",
+    "status": "node tools/install.mjs --status",
+    "uninstall:preset": "node tools/install.mjs --uninstall"
+  },
+  "keywords": [
+    "deepseek",
+    "deepseek-harness",
+    "dsh",
+    "dsh-plugin",
+    "agent-preset",
+    "writing",
+    "writing-agent",
+    "chinese"
+  ],
+  "license": "MIT",
+  "engines": {
+    "node": ">=20"
+  },
+  "dshhub": {
+    "schemaVersion": 1,
+    "displayName": "写作 Agent 预设",
+    "summary": "面向长文、报告、文案与文档交付的写作 agent 预设：写作人设 + 4 个写作技能 + 检索 / 文件 / Office 交付工具。",
+    "categories": [
+      "写作",
+      "Agent 预设"
+    ],
+    "surfaces": [
+      "host"
+    ],
+    "capabilities": {
+      "provides": [
+        "agent-preset:writing",
+        "skills:writing"
+      ],
+      "reads": [
+        "fs",
+        "skills",
+        "session:events"
+      ],
+      "network": [
+        "*"
+      ]
+    },
+    "compatibility": {
+      "dsh": ">=0.2.0-rc.2",
+      "node": ">=20"
+    }
+  }
+}

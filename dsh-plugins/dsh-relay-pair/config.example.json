@@ -1,0 +1,24 @@
+{
+  "relayUrl": "http://127.0.0.1:8787",
+  "deviceName": "",
+  "deviceKind": "auto",
+  "autostart": true,
+  "localExec": true,
+  "heartbeatSeconds": 20,
+  "pollSeconds": 25,
+  "syncMode": "manual",
+  "hostBase": "",
+  "sessionSnapshot": true,
+  "webTunnel": {
+    "enabled": false,
+    "sshHost": "",
+    "sshUser": "root",
+    "sshPort": 22,
+    "keyPath": "",
+    "remotePort": 18944,
+    "publicUrl": "",
+    "closeGraceSeconds": 45,
+    "requireMobilePeer": true,
+    "idleMinutes": 0
+  }
+}

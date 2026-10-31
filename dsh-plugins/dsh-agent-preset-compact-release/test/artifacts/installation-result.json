@@ -1,0 +1,363 @@
+{
+  "startedAt": "2026-10-23T12:41:57.877Z",
+  "profile": "C:/Users/user/.dsh/profiles/desktop",
+  "package": {
+    "id": "dsh-agent-preset-compact",
+    "version": "0.1.0",
+    "release": "E:\\工作区\\dsh-agent-preset-compact-release",
+    "clientExpectedSha256": "9b2409c995df1074efffea89069fcceb16c32036648cad5b29dd7b9e098924fa",
+    "clientHashMatch": true,
+    "client": {
+      "kind": "file",
+      "bytes": 9934,
+      "sha256": "9b2409c995df1074efffea89069fcceb16c32036648cad5b29dd7b9e098924fa"
+    }
+  },
+  "regression": {
+    "tests": 22,
+    "pass": 22,
+    "fail": 0,
+    "syntaxChecks": [
+      "lib/index.js",
+      "lib/client.js",
+      "tools/install.mjs"
+    ],
+    "exitCode": 0
+  },
+  "serviceMetadata": {
+    "address": "127.0.0.1",
+    "port": 59809,
+    "pid": 3560,
+    "process": "DeepSeek Harness.exe",
+    "commandProfileDesktop": true,
+    "rawCommandWithheld": true,
+    "pidAfter": 3560
+  },
+  "gui": {
+    "existingCDPPort": null,
+    "otherCDPPipeNotReused": true,
+    "visualAutomaticallyVerified": false,
+    "rootHttpStatus": 401,
+    "note": "服务端loaded已验，当前打开页面刷新/视觉未自动验"
+  },
+  "snapshots": {
+    "before": {
+      "root": {
+        "cordis.patch.yml": {
+          "kind": "file",
+          "bytes": 24630,
+          "sha256": "2c661c7da85a303fcc6d979a43633c53f1bc87f6e0a20939eb7d3ff468f5a9ae"
+        },
+        "cordis.yml": {
+          "kind": "file",
+          "bytes": 66060,
+          "sha256": "7e5e11453fb384b90038cf8d29135b901d0aa2870d3bc867c8867cc96ab61336"
+        },
+        "package.json": {
+          "kind": "file",
+          "bytes": 997,
+          "sha256": "c4128a86538831ea19c78a59fe3b370163a34fcdb6c38a365bdacc3fff356398"
+        }
+      },
+      "modules": {}
+    },
+    "afterStatusBefore": {
+      "root": {
+        "cordis.patch.yml": {
+          "kind": "file",
+          "bytes": 24630,
+          "sha256": "2c661c7da85a303fcc6d979a43633c53f1bc87f6e0a20939eb7d3ff468f5a9ae"
+        },
+        "cordis.yml": {
+          "kind": "file",
+          "bytes": 66060,
+          "sha256": "7e5e11453fb384b90038cf8d29135b901d0aa2870d3bc867c8867cc96ab61336"
+        },
+        "package.json": {
+          "kind": "file",
+          "bytes": 997,
+          "sha256": "c4128a86538831ea19c78a59fe3b370163a34fcdb6c38a365bdacc3fff356398"
+        }
+      },
+      "modules": {}
+    },
+    "afterInstall": {
+      "root": {
+        ".dsh-agent-preset-compact.json": {
+          "kind": "file",
+          "bytes": 25836,
+          "sha256": "6937e5ea1edf5e06c6eaf03c50593fa78fa81f78b9aba529c19697949580e777"
+        },
+        "cordis.patch.yml": {
+          "kind": "file",
+          "bytes": 24794,
+          "sha256": "0af6932fd47b038e3bbdb32cff62e00470109b84516e32892bd0239b31a72895"
+        },
+        "cordis.patch.yml.bak-dsh-agent-preset-compact-ce8938d4-7cec-49f7-94eb-e67dddc64e3f": {
+          "kind": "file",
+          "bytes": 24630,
+          "sha256": "2c661c7da85a303fcc6d979a43633c53f1bc87f6e0a20939eb7d3ff468f5a9ae"
+        },
+        "cordis.yml": {
+          "kind": "file",
+          "bytes": 66060,
+          "sha256": "7e5e11453fb384b90038cf8d29135b901d0aa2870d3bc867c8867cc96ab61336"
+        },
+        "package.json": {
+          "kind": "file",
+          "bytes": 997,
+          "sha256": "c4128a86538831ea19c78a59fe3b370163a34fcdb6c38a365bdacc3fff356398"
+        }
+      },
+      "modules": {
+        "dsh-agent-preset-compact": {
+          "kind": "link",
+          "target": "E:\\工作区\\dsh-agent-preset-compact-release"
+        }
+      }
+    },
+    "afterStatusAfter": {
+      "root": {
+        ".dsh-agent-preset-compact.json": {
+          "kind": "file",
+          "bytes": 25836,
+          "sha256": "6937e5ea1edf5e06c6eaf03c50593fa78fa81f78b9aba529c19697949580e777"
+        },
+        "cordis.patch.yml": {
+          "kind": "file",
+          "bytes": 24794,
+          "sha256": "0af6932fd47b038e3bbdb32cff62e00470109b84516e32892bd0239b31a72895"
+        },
+        "cordis.patch.yml.bak-dsh-agent-preset-compact-ce8938d4-7cec-49f7-94eb-e67dddc64e3f": {
+          "kind": "file",
+          "bytes": 24630,
+          "sha256": "2c661c7da85a303fcc6d979a43633c53f1bc87f6e0a20939eb7d3ff468f5a9ae"
+        },
+        "cordis.yml": {
+          "kind": "file",
+          "bytes": 66060,
+          "sha256": "7e5e11453fb384b90038cf8d29135b901d0aa2870d3bc867c8867cc96ab61336"
+        },
+        "package.json": {
+          "kind": "file",
+          "bytes": 997,
+          "sha256": "c4128a86538831ea19c78a59fe3b370163a34fcdb6c38a365bdacc3fff356398"
+        }
+      },
+      "modules": {
+        "dsh-agent-preset-compact": {
+          "kind": "link",
+          "target": "E:\\工作区\\dsh-agent-preset-compact-release"
+        }
+      }
+    },
+    "afterRepeat": {
+      "root": {
+        ".dsh-agent-preset-compact.json": {
+          "kind": "file",
+          "bytes": 25836,
+          "sha256": "6937e5ea1edf5e06c6eaf03c50593fa78fa81f78b9aba529c19697949580e777"
+        },
+        "cordis.patch.yml": {
+          "kind": "file",
+          "bytes": 24794,
+          "sha256": "0af6932fd47b038e3bbdb32cff62e00470109b84516e32892bd0239b31a72895"
+        },
+        "cordis.patch.yml.bak-dsh-agent-preset-compact-ce8938d4-7cec-49f7-94eb-e67dddc64e3f": {
+          "kind": "file",
+          "bytes": 24630,
+          "sha256": "2c661c7da85a303fcc6d979a43633c53f1bc87f6e0a20939eb7d3ff468f5a9ae"
+        },
+        "cordis.yml": {
+          "kind": "file",
+          "bytes": 66060,
+          "sha256": "7e5e11453fb384b90038cf8d29135b901d0aa2870d3bc867c8867cc96ab61336"
+        },
+        "package.json": {
+          "kind": "file",
+          "bytes": 997,
+          "sha256": "c4128a86538831ea19c78a59fe3b370163a34fcdb6c38a365bdacc3fff356398"
+        }
+      },
+      "modules": {
+        "dsh-agent-preset-compact": {
+          "kind": "link",
+          "target": "E:\\工作区\\dsh-agent-preset-compact-release"
+        }
+      }
+    },
+    "final": {
+      "root": {
+        ".dsh-agent-preset-compact.json": {
+          "kind": "file",
+          "bytes": 25836,
+          "sha256": "6937e5ea1edf5e06c6eaf03c50593fa78fa81f78b9aba529c19697949580e777"
+        },
+        "cordis.patch.yml": {
+          "kind": "file",
+          "bytes": 24794,
+          "sha256": "0af6932fd47b038e3bbdb32cff62e00470109b84516e32892bd0239b31a72895"
+        },
+        "cordis.patch.yml.bak-dsh-agent-preset-compact-ce8938d4-7cec-49f7-94eb-e67dddc64e3f": {
+          "kind": "file",
+          "bytes": 24630,
+          "sha256": "2c661c7da85a303fcc6d979a43633c53f1bc87f6e0a20939eb7d3ff468f5a9ae"
+        },
+        "cordis.yml": {
+          "kind": "file",
+          "bytes": 66120,
+          "sha256": "e16f8548562c5f37cfdd4b849a90e75f1f3aadbee723922598b099bd094d65ac"
+        },
+        "package.json": {
+          "kind": "file",
+          "bytes": 997,
+          "sha256": "c4128a86538831ea19c78a59fe3b370163a34fcdb6c38a365bdacc3fff356398"
+        }
+      },
+      "modules": {
+        "dsh-agent-preset-compact": {
+          "kind": "link",
+          "target": "E:\\工作区\\dsh-agent-preset-compact-release"
+        }
+      }
+    }
+  },
+  "baselineGraph": {
+    "httpStatus": 200,
+    "targets": [],
+    "count": 0
+  },
+  "statusBefore": {
+    "command": "C:/Users/user\\.dsh\\dsh-runtimes\\dsh-primary-runtime\\dependencies\\node\\bin\\node.exe tools/install.mjs --profile-dir C:/Users/user/.dsh/profiles/desktop --status",
+    "exitCode": 0,
+    "stdout": "{\n  \"action\": \"status\",\n  \"profile\": \"C:/Users/user\\\\.dsh\\\\profiles\\\\desktop\",\n  \"installed\": false,\n  \"link\": null,\n  \"patchManaged\": false\n}",
+    "stderr": ""
+  },
+  "checks": {
+    "statusReadOnly": true,
+    "statusAfterReadOnly": true,
+    "repeatChangedFalse": true,
+    "repeatSnapshotSame": true,
+    "patchOutsideBytesSame": true,
+    "backupHashBytesSame": true,
+    "manifestHashBytesSame": true,
+    "uniqueSelfBlock": {
+      "begin": 1,
+      "end": 1,
+      "id": 1,
+      "name": 1,
+      "exactBlock": true
+    },
+    "junctionTargetExpected": true,
+    "noOwnLock": true,
+    "noOwnTemp": true,
+    "foreignRootEntriesSame": true,
+    "foreignModuleEntriesSame": true,
+    "finalProfileSame": false,
+    "finalManagedFilesSame": true
+  },
+  "install": {
+    "command": "C:/Users/user\\.dsh\\dsh-runtimes\\dsh-primary-runtime\\dependencies\\node\\bin\\node.exe tools/install.mjs --profile-dir C:/Users/user/.dsh/profiles/desktop --install",
+    "exitCode": 0,
+    "stdout": "{\n  \"action\": \"install\",\n  \"profile\": \"C:/Users/user\\\\.dsh\\\\profiles\\\\desktop\",\n  \"changed\": true,\n  \"backup\": \"C:/Users/user\\\\.dsh\\\\profiles\\\\desktop\\\\cordis.patch.yml.bak-dsh-agent-preset-compact-ce8938d4-7cec-49f7-94eb-e67dddc64e3f\"\n}",
+    "stderr": ""
+  },
+  "backupPath": "C:/Users/user\\.dsh\\profiles\\desktop\\cordis.patch.yml.bak-dsh-agent-preset-compact-ce8938d4-7cec-49f7-94eb-e67dddc64e3f",
+  "statusAfter": {
+    "command": "C:/Users/user\\.dsh\\dsh-runtimes\\dsh-primary-runtime\\dependencies\\node\\bin\\node.exe tools/install.mjs --profile-dir C:/Users/user/.dsh/profiles/desktop --status",
+    "exitCode": 0,
+    "stdout": "{\n  \"action\": \"status\",\n  \"profile\": \"C:/Users/user\\\\.dsh\\\\profiles\\\\desktop\",\n  \"installed\": true,\n  \"link\": \"E:\\\\工作区\\\\dsh-agent-preset-compact-release\",\n  \"patchManaged\": true\n}",
+    "stderr": ""
+  },
+  "repeatInstall": {
+    "command": "C:/Users/user\\.dsh\\dsh-runtimes\\dsh-primary-runtime\\dependencies\\node\\bin\\node.exe tools/install.mjs --profile-dir C:/Users/user/.dsh/profiles/desktop --install",
+    "exitCode": 0,
+    "stdout": "{\n  \"action\": \"install\",\n  \"profile\": \"C:/Users/user\\\\.dsh\\\\profiles\\\\desktop\",\n  \"changed\": false\n}",
+    "stderr": ""
+  },
+  "outsidePatch": {
+    "bytes": 24630,
+    "sha256": "2c661c7da85a303fcc6d979a43633c53f1bc87f6e0a20939eb7d3ff468f5a9ae"
+  },
+  "graphAfter": {
+    "httpStatus": 200,
+    "targets": [
+      {
+        "id": "dsh-agent-preset-compact",
+        "rev": "41f908a0c716",
+        "url": "plugins/??dsh-agent-preset-compact/client.js&rev=41f908a0c716"
+      }
+    ],
+    "count": 1
+  },
+  "script": {
+    "httpStatus": 200,
+    "bytes": 10015,
+    "sha256": "c55b30df6906a8d35e07710d2bb5b36d5781adeaf24865c93a1295ee03d7dfcb",
+    "idMarker": true,
+    "factoryMarker": true,
+    "clientHashMatch": true,
+    "hashMarkerInMetadata": false,
+    "rawResourceEqualsClient": false,
+    "clientSourceContained": true,
+    "clientSourceOffset": 0,
+    "verifiedClientSourceSha256": "9b2409c995df1074efffea89069fcceb16c32036648cad5b29dd7b9e098924fa",
+    "wrapperBytes": 81,
+    "wrapperHashMarker": false,
+    "serverWrapsSource": true,
+    "hashMarkerNote": "Graph rev is server-generated, not the client SHA-256. Validate the exact embedded client source SHA-256; do not modify the audited client to add a marker."
+  },
+  "finishedAt": "2026-10-23T12:42:17.094Z",
+  "installationRetained": true,
+  "noRestart": true,
+  "fixtureDimensions": {
+    "source": "existing production native Menu fixture, NOT live GUI",
+    "wide": {
+      "viewport": "1000x700",
+      "width": 420,
+      "height": 316,
+      "top": 12,
+      "columns": 2
+    },
+    "narrow": {
+      "viewport": "540x550",
+      "width": 420,
+      "height": 316,
+      "top": 12,
+      "columns": 1
+    },
+    "boundary": {
+      "viewport": "560x550",
+      "width": 420,
+      "height": 316,
+      "top": 12,
+      "columns": 2
+    },
+    "small": {
+      "viewport": "320x240; clearance42",
+      "width": 296,
+      "height": 162,
+      "top": 62,
+      "columns": 1
+    }
+  },
+  "profileConcurrentMetadataChanges": [
+    {
+      "section": "root",
+      "name": "cordis.yml",
+      "before": {
+        "kind": "file",
+        "bytes": 66060,
+        "sha256": "7e5e11453fb384b90038cf8d29135b901d0aa2870d3bc867c8867cc96ab61336"
+      },
+      "after": {
+        "kind": "file",
+        "bytes": 66120,
+        "sha256": "e16f8548562c5f37cfdd4b849a90e75f1f3aadbee723922598b099bd094d65ac"
+      }
+    }
+  ],
+  "todoCheck": {
+    "note": "Earlier calls were explicitly filtered and returned no matches; not a complete default smart-view check."
+  }
+}

@@ -1,0 +1,61 @@
+# dsh-relay-pair bundle patch: one insert row carrying the whole plugin config.
+# Override this row (by id) in the profile cordis.patch.yml; a patch replaces
+# the row's whole config, so restate every key you keep.
+- insert:
+    - id: dsh-relay-pair
+      name: dsh-relay-pair
+      config:
+        # Relay base URL, e.g. https://relay.example.com (no trailing slash).
+        # Empty is fine: relay_pair can take relayUrl as an argument instead.
+        relayUrl: ''
+        # Device name shown on the relay web page. Empty = DSH@<hostname>.
+        deviceName: ''
+        # auto | desktop | mobile. auto treats linux+arm64 (DSHA proot) as mobile.
+        deviceKind: auto
+        # Start heartbeat + long polling as soon as the plugin loads (needs a
+        # stored pairing token from an earlier relay_pair).
+        autostart: true
+        # When a task is dispatched to this device, deliver it into the most
+        # recently active DSH session. Set false on machines that should only
+        # read state, never run tasks.
+        localExec: true
+        # Heartbeat interval in seconds.
+        heartbeatSeconds: 20
+        # Long-poll window in seconds; the relay holds the request this long.
+        pollSeconds: 25
+        # manual = only relay_sync_task uploads local history (default, private).
+        # auto   = also push finished local tasks automatically.
+        syncMode: manual
+        # Local DSH web base URL for tunnel proxying. Empty = auto-detect the
+        # running web server port (falls back to http://127.0.0.1:56246).
+        hostBase: ''
+        # Upload this device's latest 8 sessions (title + full messages) to the
+        # relay, cloud only: nothing is delivered to any device. The web page can
+        # later send one of them to a device on request. Archived sessions are
+        # skipped. false = never upload session snapshots.
+        sessionSnapshot: true
+        # SSH reverse tunnel: expose this machine's DSH web page on the relay
+        # server so a phone browser can open it. Off by default.
+        #
+        # It is NOT a resident daemon: the tunnel is opened only while all of
+        # these hold, and closed (SIGTERM, then SIGKILL after 5s) once they do
+        # not for closeGraceSeconds:
+        #   1. enabled here, with sshHost + keyPath set;
+        #   2. this device is paired to the relay;
+        #   3. the relay was reachable within the last 60 seconds;
+        #   4. (requireMobilePeer) a mobile device is paired on the relay and has
+        #      been seen within idleMinutes.
+        # ssh itself is started with BatchMode + IdentitiesOnly: it never prompts.
+        # The key on the server must be restricted, e.g.
+        #   restrict,port-forwarding,permitlisten="127.0.0.1:18944" ssh-ed25519 ...
+        webTunnel:
+          enabled: false
+          sshHost: ''
+          sshUser: root
+          sshPort: 22
+          keyPath: ''
+          remotePort: 18944
+          publicUrl: ''
+          closeGraceSeconds: 45
+          requireMobilePeer: true
+          idleMinutes: 0

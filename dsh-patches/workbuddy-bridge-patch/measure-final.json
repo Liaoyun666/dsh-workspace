@@ -1,0 +1,516 @@
+[
+  {
+    "model": "hy4-preview",
+    "rate": 0.29,
+    "probes": [
+      {
+        "name": "in",
+        "ok": true,
+        "input": 12716,
+        "output": 8,
+        "cacheRead": 0,
+        "credit": 1.82
+      },
+      {
+        "name": "out",
+        "ok": true,
+        "input": 125,
+        "output": 2069,
+        "cacheRead": 0,
+        "credit": 0.61
+      },
+      {
+        "name": "mix",
+        "ok": true,
+        "input": 124,
+        "output": 1035,
+        "cacheRead": 0,
+        "credit": 0.31
+      }
+    ]
+  },
+  {
+    "model": "hy3",
+    "rate": 0,
+    "free": true
+  },
+  {
+    "model": "hy3-x",
+    "rate": 0.05,
+    "probes": [
+      {
+        "name": "in",
+        "ok": true,
+        "input": 70053,
+        "output": 8,
+        "cacheRead": 0,
+        "credit": 1.2
+      },
+      {
+        "name": "out",
+        "ok": true,
+        "input": 75,
+        "output": 6000,
+        "cacheRead": 0,
+        "credit": 0.6
+      },
+      {
+        "name": "mix",
+        "ok": true,
+        "input": 76,
+        "output": 3000,
+        "cacheRead": 0,
+        "credit": 0.3
+      }
+    ]
+  },
+  {
+    "model": "step-5-preview",
+    "rate": 0,
+    "free": true
+  },
+  {
+    "model": "space-bunny",
+    "rate": 0.08,
+    "probes": [
+      {
+        "name": "in",
+        "ok": true,
+        "input": 46027,
+        "output": 3,
+        "cacheRead": 140,
+        "credit": 0.69
+      },
+      {
+        "name": "out",
+        "ok": true,
+        "input": 212,
+        "output": 3681,
+        "cacheRead": 130,
+        "credit": 0.22
+      },
+      {
+        "name": "mix",
+        "ok": true,
+        "input": 213,
+        "output": 1490,
+        "cacheRead": 0,
+        "credit": 0.09
+      }
+    ]
+  },
+  {
+    "model": "deepseek-v4.1-flash",
+    "rate": 0.11,
+    "probes": [
+      {
+        "name": "in",
+        "ok": true,
+        "input": 36417,
+        "output": 1,
+        "cacheRead": 0,
+        "credit": 0.52
+      },
+      {
+        "name": "out",
+        "ok": true,
+        "input": 73,
+        "output": 2370,
+        "cacheRead": 0,
+        "credit": 0.14
+      },
+      {
+        "name": "mix",
+        "ok": true,
+        "input": 71,
+        "output": 1187,
+        "cacheRead": 0,
+        "credit": 0.07
+      }
+    ]
+  },
+  {
+    "model": "glm-5.3",
+    "rate": 0.69,
+    "probes": [
+      {
+        "name": "in",
+        "ok": true,
+        "input": 5852,
+        "output": 3,
+        "cacheRead": 0,
+        "credit": 0.94
+      },
+      {
+        "name": "out",
+        "ok": true,
+        "input": 81,
+        "output": 599,
+        "cacheRead": 0,
+        "credit": 0.35
+      },
+      {
+        "name": "mix",
+        "ok": true,
+        "input": 80,
+        "output": 286,
+        "cacheRead": 0,
+        "credit": 0.17
+      }
+    ]
+  },
+  {
+    "model": "glm-5.3-flash",
+    "rate": 0.08,
+    "probes": [
+      {
+        "name": "in",
+        "ok": true,
+        "input": 50060,
+        "output": 3,
+        "cacheRead": 0,
+        "credit": 0.74
+      },
+      {
+        "name": "out",
+        "ok": true,
+        "input": 82,
+        "output": 1917,
+        "cacheRead": 0,
+        "credit": 0.1
+      },
+      {
+        "name": "mix",
+        "ok": true,
+        "input": 81,
+        "output": 1417,
+        "cacheRead": 0,
+        "credit": 0.07
+      }
+    ]
+  },
+  {
+    "model": "glm-5.2",
+    "rate": 0.79,
+    "probes": [
+      {
+        "name": "in",
+        "ok": true,
+        "input": 5079,
+        "output": 1,
+        "cacheRead": 0,
+        "credit": 0.81
+      },
+      {
+        "name": "out",
+        "ok": true,
+        "input": 75,
+        "output": 531,
+        "cacheRead": 0,
+        "credit": 0.31
+      },
+      {
+        "name": "mix",
+        "ok": true,
+        "input": 74,
+        "output": 217,
+        "cacheRead": 0,
+        "credit": 0.13
+      }
+    ]
+  },
+  {
+    "model": "glm-5.1",
+    "rate": 0.79,
+    "probes": [
+      {
+        "name": "in",
+        "ok": false,
+        "status": 400,
+        "message": "{\"code\":11133,\"msg\":\"the request parameters were rejected by the model provider\",\"requestId\":\"20076178-7b15-4a59-9036-9f4e5cf522ba\",\"extError\":{\"code\":\"1210\",\"message\":\"the request parameters were rejected by the model provider\",\"param\":\"\","
+      },
+      {
+        "name": "out",
+        "ok": false,
+        "status": 400,
+        "message": "{\"code\":11133,\"msg\":\"the request parameters were rejected by the model provider\",\"requestId\":\"30c0a646-213e-4055-af89-8a3acc5bc576\",\"extError\":{\"code\":\"1210\",\"message\":\"the request parameters were rejected by the model provider\",\"param\":\"\","
+      },
+      {
+        "name": "mix",
+        "ok": false,
+        "status": 400,
+        "message": "{\"code\":11133,\"msg\":\"the request parameters were rejected by the model provider\",\"requestId\":\"1380403a-287c-4d49-b81e-72b506af490c\",\"extError\":{\"code\":\"1210\",\"message\":\"the request parameters were rejected by the model provider\",\"param\":\"\","
+      }
+    ]
+  },
+  {
+    "model": "glm-5v-turbo",
+    "rate": 0.71,
+    "probes": [
+      {
+        "name": "in",
+        "ok": true,
+        "input": 5655,
+        "output": 2,
+        "cacheRead": 0,
+        "credit": 0.85
+      },
+      {
+        "name": "out",
+        "ok": true,
+        "input": 74,
+        "output": 785,
+        "cacheRead": 3,
+        "credit": 0.45
+      },
+      {
+        "name": "mix",
+        "ok": true,
+        "input": 74,
+        "output": 313,
+        "cacheRead": 2,
+        "credit": 0.19
+      }
+    ]
+  },
+  {
+    "model": "minimax-m3.1-flash",
+    "rate": 0.08,
+    "probes": [
+      {
+        "name": "in",
+        "ok": true,
+        "input": 46072,
+        "output": 8,
+        "cacheRead": 186,
+        "credit": 1.31
+      },
+      {
+        "name": "out",
+        "ok": true,
+        "input": 257,
+        "output": 3790,
+        "cacheRead": 186,
+        "credit": 0.44
+      },
+      {
+        "name": "mix",
+        "ok": true,
+        "input": 258,
+        "output": 1577,
+        "cacheRead": 186,
+        "credit": 0.18
+      }
+    ]
+  },
+  {
+    "model": "minimax-m3",
+    "rate": 0.25,
+    "probes": [
+      {
+        "name": "in",
+        "ok": true,
+        "input": 14850,
+        "output": 2,
+        "cacheRead": 161,
+        "credit": 0.88
+      },
+      {
+        "name": "out",
+        "ok": true,
+        "input": 230,
+        "output": 1110,
+        "cacheRead": 128,
+        "credit": 0.27
+      },
+      {
+        "name": "mix",
+        "ok": true,
+        "input": 230,
+        "output": 778,
+        "cacheRead": 128,
+        "credit": 0.19
+      }
+    ]
+  },
+  {
+    "model": "minimax-m2.7",
+    "rate": 0.19,
+    "probes": [
+      {
+        "name": "in",
+        "ok": true,
+        "input": 19360,
+        "output": 8,
+        "cacheRead": 0,
+        "credit": 0.88
+      },
+      {
+        "name": "out",
+        "ok": true,
+        "input": 75,
+        "output": 3158,
+        "cacheRead": 0,
+        "credit": 0.57
+      },
+      {
+        "name": "mix",
+        "ok": true,
+        "input": 80,
+        "output": 1579,
+        "cacheRead": 0,
+        "credit": 0.29
+      }
+    ]
+  },
+  {
+    "model": "kimi-k3.1-pro",
+    "rate": 0.97,
+    "probes": [
+      {
+        "name": "in",
+        "ok": true,
+        "input": 3735,
+        "output": 8,
+        "cacheRead": 0,
+        "credit": 1.19
+      },
+      {
+        "name": "out",
+        "ok": true,
+        "input": 158,
+        "output": 619,
+        "cacheRead": 0,
+        "credit": 1.07
+      },
+      {
+        "name": "mix",
+        "ok": true,
+        "input": 157,
+        "output": 310,
+        "cacheRead": 0,
+        "credit": 0.56
+      }
+    ]
+  },
+  {
+    "model": "kimi-k3-1",
+    "rate": 1.62,
+    "probes": [
+      {
+        "name": "in",
+        "ok": true,
+        "input": 2263,
+        "output": 11,
+        "cacheRead": 0,
+        "credit": 1.13
+      },
+      {
+        "name": "out",
+        "ok": true,
+        "input": 158,
+        "output": 277,
+        "cacheRead": 0,
+        "credit": 0.75
+      },
+      {
+        "name": "mix",
+        "ok": true,
+        "input": 159,
+        "output": 188,
+        "cacheRead": 0,
+        "credit": 0.53
+      }
+    ]
+  },
+  {
+    "model": "kimi-k2.8-preview",
+    "rate": 0.77,
+    "probes": [
+      {
+        "name": "in",
+        "ok": true,
+        "input": 4659,
+        "output": 8,
+        "cacheRead": 0,
+        "credit": 0.74
+      },
+      {
+        "name": "out",
+        "ok": true,
+        "input": 157,
+        "output": 448,
+        "cacheRead": 0,
+        "credit": 0.32
+      },
+      {
+        "name": "mix",
+        "ok": true,
+        "input": 160,
+        "output": 274,
+        "cacheRead": 0,
+        "credit": 0.2
+      }
+    ]
+  },
+  {
+    "model": "deepseek-v4-pro",
+    "rate": 0.51,
+    "probes": [
+      {
+        "name": "in",
+        "ok": true,
+        "input": 7856,
+        "output": 1,
+        "cacheRead": 0,
+        "credit": 1.01
+      },
+      {
+        "name": "out",
+        "ok": true,
+        "input": 70,
+        "output": 967,
+        "cacheRead": 0,
+        "credit": 0.38
+      },
+      {
+        "name": "mix",
+        "ok": true,
+        "input": 69,
+        "output": 278,
+        "cacheRead": 0,
+        "credit": 0.12
+      }
+    ]
+  },
+  {
+    "model": "mimo-v2.6-pro",
+    "rate": 0.13,
+    "probes": [
+      {
+        "name": "in",
+        "ok": true,
+        "input": 30811,
+        "output": 2,
+        "cacheRead": 0,
+        "credit": 2.64
+      },
+      {
+        "name": "out",
+        "ok": true,
+        "input": 89,
+        "output": 3793,
+        "cacheRead": 0,
+        "credit": 0.66
+      },
+      {
+        "name": "mix",
+        "ok": true,
+        "input": 86,
+        "output": 512,
+        "cacheRead": 0,
+        "credit": 0.1
+      }
+    ]
+  }
+]

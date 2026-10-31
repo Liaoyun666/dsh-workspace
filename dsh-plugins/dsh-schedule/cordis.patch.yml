@@ -1,0 +1,27 @@
+# dsh-schedule bundle patch: one insert row carrying the whole plugin config.
+# Override this row (by id) in the profile cordis.patch.yml; a patch replaces
+# the row's whole config, so restate every key you keep.
+- insert:
+    - id: dsh-schedule
+      name: dsh-schedule
+      config:
+        # Remind tasks + run stamps. Empty means $DSH_HOME/schedule-tasks.json
+        # (the same file also holds the timed goals).
+        storagePath: ''
+        # Execution history of remind tasks (one JSON record per line).
+        # Empty means $DSH_HOME/schedule-history.jsonl.
+        historyPath: ''
+        # Remind-task wake interval in seconds (lower bound on how late a due
+        # reminder can fire). 15s is a good default.
+        tickSeconds: 15
+        # Timed-goal wake interval in seconds. Goals are second-precise, so
+        # keep this at 1 unless you want to trade precision for wakeups.
+        goalTickSeconds: 1
+        # Native OS notification when a remind run finishes.
+        systemNotify: true
+        systemNotifySound: true
+        # A one-shot (at) task is removed once its run ends, so spent rows do
+        # not pile up in the task tab. Recurring rules and config tasks stay.
+        autoRemoveFinished: true
+        # Static remind tasks declared here (same shape as schedule_add).
+        tasks: []

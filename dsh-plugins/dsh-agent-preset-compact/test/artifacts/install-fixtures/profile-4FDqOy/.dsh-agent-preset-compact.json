@@ -1,0 +1,8 @@
+{
+  "schema": 1,
+  "plugin": "E:\\工作区\\dsh-agent-preset-compact",
+  "block": "# BEGIN dsh-agent-preset-compact managed v1\n- insert:\n    - id: agent-preset-compact\n      name: dsh-agent-preset-compact\n# END dsh-agent-preset-compact managed v1\n",
+  "replace": "",
+  "patchExisted": true,
+  "linkCreated": true
+}

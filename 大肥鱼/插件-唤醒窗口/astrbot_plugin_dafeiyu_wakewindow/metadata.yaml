@@ -1,0 +1,6 @@
+name: astrbot_plugin_dafeiyu_wakewindow
+display_name: 大肥鱼唤醒窗口
+desc: 群里 @ 一次管 N 秒；没 @ 也会随机接话；回复随机拆成 1~8 条短消息
+version: 1.1.0
+author: 大肥鱼
+repo: https://github.com/your-github-name/AI

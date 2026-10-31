@@ -1,0 +1,7 @@
+name: astrbot_plugin_dafeiyu_merge
+display_name: 大肥鱼消息合并
+short_desc: 把主人连发的单字/半句攒成一句，她只回一次，不再一条条懵着接
+desc: 连发防抖。同一个人连着发「你」「是」「看」「一」「句」这种碎片时，先攒住，等停手 1 秒再合成一句话交给模型，于是她只回一次、而且看得懂整句。指令（/开头）与群里没叫她的话不掺和。
+author: 大肥鱼
+version: 1.0.0
+repo: https://github.com/your-github-name/AI

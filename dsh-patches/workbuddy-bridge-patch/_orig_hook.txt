@@ -1,0 +1,46 @@
+		function useWorkBuddySessionCredits(path, sessionId, enabled) {
+			const [credits, setCredits] = (0, react.useState)();
+			const mounted = (0, react.useRef)(true);
+			/** Number of the newest read allowed to write; assigned when a read starts. */
+			const readSeq = (0, react.useRef)(0);
+			const read = (0, react.useCallback)(async (signal) => {
+				if (sessionId === void 0 || sessionId === "") return;
+				const seq = ++readSeq.current;
+				try {
+					const response = await fetch(`${path}?sessionId=${encodeURIComponent(sessionId)}`, {
+						credentials: "same-origin",
+						headers: { accept: "application/json" },
+						signal
+					});
+					if (!response.ok) return;
+					const value = await response.json().catch(() => void 0);
+					if (!isWorkBuddySessionCredits(value)) return;
+					if (!mounted.current || signal.aborted || seq !== readSeq.current) return;
+					setCredits(value.credits);
+				} catch {}
+			}, [path, sessionId]);
+			(0, react.useEffect)(() => {
+				mounted.current = true;
+				if (!enabled || sessionId === void 0 || sessionId === "") return;
+				const controller = new AbortController();
+				read(controller.signal);
+				const timer = window.setInterval(() => {
+					read(controller.signal);
+				}, POLL_INTERVAL_MS$1);
+				const onFocus = () => {
+					read(controller.signal);
+				};
+				window.addEventListener("focus", onFocus);
+				return () => {
+					mounted.current = false;
+					controller.abort();
+					window.clearInterval(timer);
+					window.removeEventListener("focus", onFocus);
+				};
+			}, [
+				enabled,
+				read,
+				sessionId
+			]);
+			return { credits };
+		}

@@ -1,0 +1,41 @@
+ManifestFileVersion: 0
+CRC: 2875939538
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: 3a2779c8e2d0a4c6933336e4e95c02a2
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: 08fb211a7e25b91826a4e61c78020e1e
+HashAppended: 0
+ClassTypes:
+- Class: 1
+  Script: {instanceID: 0}
+- Class: 4
+  Script: {instanceID: 0}
+- Class: 21
+  Script: {instanceID: 0}
+- Class: 23
+  Script: {instanceID: 0}
+- Class: 28
+  Script: {instanceID: 0}
+- Class: 33
+  Script: {instanceID: 0}
+- Class: 43
+  Script: {instanceID: 0}
+- Class: 48
+  Script: {instanceID: 0}
+- Class: 65
+  Script: {instanceID: 0}
+- Class: 114
+  Script: {fileID: 675521102, guid: 0741ad192fcd8df4bb480ec0caaa4c28, type: 3}
+- Class: 114
+  Script: {fileID: -33125140, guid: 0741ad192fcd8df4bb480ec0caaa4c28, type: 3}
+- Class: 115
+  Script: {instanceID: 0}
+- Class: 213
+  Script: {instanceID: 0}
+Assets:
+- Assets/Resources/p99037001.png
+- Assets/ModBuild_99037001/99037001.prefab
+Dependencies: []

@@ -1,0 +1,679 @@
+/* dsh-font-lab —— 排版与几何照抄 Font Lab（ignoredone.com/fontlab）的样本页：
+   胶囊控件、18px 卡片圆角、48px 网格间距、36px 预览正文、.08em 大写小标题、
+   cubic-bezier(.22,1,.36,1) 的 0.72s 入场。颜色改成吃 DSH 的深色底。
+   Font Lab 原站是白底黑字，硬搬白底会在深色壳里像一张外来的纸，所以只借它的
+   留白与形状，色板换成 var(--dsw-alias-label-primary) 那条调的灰阶，外加它唯一的
+   强调色 #d8e4e1（浅灰青）。 */
+
+.fl-root {
+  /* 明暗两套值都挂在这里：默认是深色壳，.fl-root[data-fl-scheme="light"] 覆盖成浅色。
+     判定由客户端量真实像素决定（见 client.template.js 的 detectScheme），
+     不看 html[data-ds-theme-source]——那是主题「偏好来源」，不一定等于皮肤实际渲染的明暗。 */
+  --fl-ink: #f1eff6;
+  --fl-ink-soft: rgba(241, 239, 246, 0.9);
+  --fl-muted: #9b9b98;
+  --fl-dim: rgba(241, 239, 246, 0.42);
+  --fl-line: rgba(255, 255, 255, 0.07);
+  --fl-surface: rgba(255, 255, 255, 0.035);
+  --fl-field: rgba(255, 255, 255, 0.06);
+  --fl-field-line: rgba(255, 255, 255, 0.09);
+  --fl-placeholder: rgba(241, 239, 246, 0.35);
+  --fl-focus-ring: rgba(122, 190, 255, 0.45);
+  --fl-tag-bg: rgba(255, 255, 255, 0.07);
+  --fl-hot-bg: rgba(216, 228, 225, 0.16);
+  --fl-hot-ink: #d8e4e1;
+  --fl-weight-bg: rgba(255, 255, 255, 0.05);
+  --fl-press-ring: transparent;
+  --fl-copy-bg: rgba(255, 255, 255, 0.07);
+  --fl-copy-hover-bg: #d8e4e1;
+  --fl-copy-hover-ink: #16181a;
+  --fl-btn-bg: #f1eff6;
+  --fl-btn-ink: #16181a;
+  --fl-btn-hover-bg: #d8e4e1;
+  --fl-btn-hover-ink: #16181a;
+  --fl-btn-off-bg: rgba(255, 255, 255, 0.08);
+  --fl-btn-off-ink: #9b9b98;
+  --fl-skeleton-a: rgba(255, 255, 255, 0.04);
+  --fl-skeleton-b: rgba(255, 255, 255, 0.09);
+  --fl-error-bg: rgba(255, 120, 120, 0.12);
+  --fl-error-ink: #ffb4b4;
+  --fl-accent: #d8e4e1;
+  --fl-accent-ink: #16181a;
+  --fl-ease: cubic-bezier(0.4, 0, 0.2, 1);
+  --fl-rise: cubic-bezier(0.22, 1, 0.36, 1);
+  --fl-veil: 19, 17, 22;
+
+  position: relative;
+  box-sizing: border-box;
+  width: 100%;
+  min-height: 100%;
+  /* 不自己开滚动：滚动交给宿主那层 scrollBody。面板自己当滚动容器的话，
+     筛选条的 sticky 会被困在一个永远不滚的 scrollport 里，滚下去就跟着跑没了。 */
+  padding: 28px 5vw 120px;
+  color: var(--fl-ink);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Microsoft YaHei", sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+.fl-root *,
+.fl-root *::before,
+.fl-root *::after {
+  box-sizing: border-box;
+}
+
+/* 面板自带滚动，宿主那条横向拖宽的手柄会压住表格边缘 —— 学 memory-evolve 的做法隐藏它。 */
+[data-phase]:has(.fl-root) [data-width-handle] {
+  display: none;
+}
+
+/* ── 抬头 ─────────────────────────────────────────────── */
+
+.fl-head {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 300px;
+  gap: 80px;
+  align-items: end;
+  margin: 8px 0 44px;
+}
+
+.fl-eyebrow {
+  margin: 0 0 16px;
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--fl-muted);
+}
+
+.fl-title {
+  margin: 0;
+  font-size: clamp(32px, 4vw, 54px);
+  font-weight: 400;
+  line-height: 1.1;
+  letter-spacing: 0.5px;
+  opacity: 0.94;
+}
+
+.fl-lede {
+  margin: 16px 0 0;
+  max-width: 44ch;
+  font-size: 14px;
+  line-height: 1.9;
+  color: var(--fl-dim);
+}
+
+.fl-stats {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.fl-stat {
+  padding: 14px 0 0;
+  border-top: 1px solid var(--fl-line);
+}
+
+.fl-stat b {
+  display: block;
+  font-size: 26px;
+  font-weight: 400;
+  line-height: 1.1;
+  letter-spacing: 0.5px;
+}
+
+.fl-stat span {
+  display: block;
+  margin-top: 6px;
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--fl-dim);
+}
+
+/* ── 筛选条 ───────────────────────────────────────────── */
+
+.fl-bar {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+  margin: 0 0 36px;
+  padding: 12px 0;
+  /* 整条要挡得住下面的卡片：底色做实，只在下面留一小截渐隐，别让卡片的字从中间透出来 */
+  background: rgb(var(--fl-veil));
+  backdrop-filter: blur(16px) saturate(180%);
+  -webkit-backdrop-filter: blur(16px) saturate(180%);
+}
+
+.fl-bar::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 100%;
+  height: 16px;
+  background: linear-gradient(to bottom, rgb(var(--fl-veil)), rgba(var(--fl-veil), 0));
+  pointer-events: none;
+}
+
+.fl-field {
+  height: 40px;
+  padding: 0 16px;
+  border-radius: 999px;
+  border: 1px solid var(--fl-field-line);
+  background: var(--fl-field);
+  color: var(--fl-ink);
+  font-family: inherit;
+  font-size: 14px;
+  letter-spacing: 0.02em;
+  outline: none;
+  transition: border-color 0.2s var(--fl-ease), box-shadow 0.2s var(--fl-ease);
+}
+
+.fl-field::placeholder {
+  color: var(--fl-placeholder);
+}
+
+.fl-field:focus-visible {
+  border-color: transparent;
+  box-shadow: 0 0 0 2px var(--fl-focus-ring);
+}
+
+.fl-search {
+  flex: 1 1 200px;
+  min-width: 0;
+}
+
+select.fl-field {
+  appearance: none;
+  -webkit-appearance: none;
+  padding-right: 36px;
+  background-image: linear-gradient(45deg, transparent 50%, var(--fl-muted) 50%),
+    linear-gradient(135deg, var(--fl-muted) 50%, transparent 50%);
+  background-position: calc(100% - 17px) 50%, calc(100% - 11px) 50%;
+  background-size: 6px 6px, 6px 6px;
+  background-repeat: no-repeat;
+}
+
+.fl-toggle {
+  height: 40px;
+  padding: 0 18px;
+  border-radius: 999px;
+  border: 1px solid var(--fl-field-line);
+  background: transparent;
+  color: var(--fl-muted);
+  font-family: inherit;
+  font-size: 14px;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+  transition: background 0.2s var(--fl-ease), color 0.2s var(--fl-ease),
+    border-color 0.2s var(--fl-ease), transform 0.2s var(--fl-ease);
+}
+
+.fl-toggle:hover {
+  color: var(--fl-ink);
+  transform: translateY(-1px);
+}
+
+.fl-toggle[aria-pressed="true"] {
+  background: var(--fl-accent);
+  border-color: transparent;
+  color: var(--fl-accent-ink);
+  font-weight: 500;
+}
+
+.fl-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  height: 40px;
+  padding: 0 22px;
+  border: 0;
+  border-radius: 999px;
+  background: var(--fl-btn-bg);
+  color: var(--fl-btn-ink);
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+  transition: background 0.2s var(--fl-ease), transform 0.2s var(--fl-ease),
+    color 0.2s var(--fl-ease);
+}
+
+.fl-btn:hover:not(:disabled) {
+  background: var(--fl-btn-hover-bg);
+  color: var(--fl-btn-hover-ink);
+  transform: translateY(-1px);
+}
+
+.fl-btn:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.fl-btn:disabled {
+  background: var(--fl-btn-off-bg);
+  color: var(--fl-btn-off-ink);
+  cursor: progress;
+  transform: none;
+}
+
+/* ── 分组与网格 ───────────────────────────────────────── */
+
+.fl-group {
+  margin: 0 0 56px;
+}
+
+.fl-group:last-child {
+  margin-bottom: 0;
+}
+
+.fl-group-head {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  margin: 0 0 6px;
+}
+
+.fl-group-title {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+  color: var(--fl-muted);
+}
+
+.fl-group-count {
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  color: var(--fl-dim);
+}
+
+.fl-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  align-items: start;
+  gap: 24px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* ── 字体卡 ───────────────────────────────────────────── */
+
+.fl-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  padding: 20px 18px 16px;
+  border-radius: 18px;
+  background: var(--fl-surface);
+  animation: fl-rise 0.72s var(--fl-rise) both;
+  animation-delay: calc(var(--i, 0) * 14ms);
+}
+
+.fl-card::after {
+  content: "";
+  position: absolute;
+  left: 5px;
+  right: 5px;
+  bottom: 0;
+  height: 1px;
+  background: var(--fl-line);
+}
+
+.fl-card-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 16px;
+  margin: 0 0 12px;
+}
+
+.fl-name {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  margin: 0;
+  min-width: 0;
+  font-size: 22px;
+  font-weight: 500;
+  line-height: 1.25;
+  letter-spacing: 0.2px;
+  opacity: 0.92;
+  word-break: break-word;
+}
+
+/* 右上角的分类字样不许被长家族名挤成省略号 */
+.fl-card-head .fl-meta {
+  flex: none;
+  align-self: flex-start;
+  padding-top: 5px;
+  white-space: nowrap;
+}
+
+.fl-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 0 0 16px;
+}
+
+.fl-tag {
+  display: inline-flex;
+  align-items: center;
+  height: 22px;
+  padding: 0 10px;
+  border-radius: 999px;
+  background: var(--fl-tag-bg);
+  color: var(--fl-muted);
+  font-size: 11px;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+}
+
+.fl-tag.is-hot {
+  background: var(--fl-hot-bg);
+  color: var(--fl-hot-ink);
+}
+
+.fl-preview {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  margin: 0 0 16px;
+  min-height: 0;
+  max-height: 2.8em;
+  font-size: 34px;
+  line-height: 1.4;
+  word-break: break-word;
+  overflow-wrap: anywhere;
+}
+
+.fl-weights {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 0 0 18px;
+}
+
+.fl-weight {
+  height: 26px;
+  padding: 0 10px;
+  border-radius: 999px;
+  border: 1px solid transparent;
+  background: var(--fl-weight-bg);
+  color: var(--fl-dim);
+  font-family: inherit;
+  font-size: 11px;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+  transition: background 0.2s var(--fl-ease), color 0.2s var(--fl-ease),
+    transform 0.2s var(--fl-ease);
+}
+
+.fl-weight:hover {
+  color: var(--fl-ink);
+  transform: translateY(-1px);
+}
+
+.fl-weight[aria-pressed="true"] {
+  background: var(--fl-accent);
+  color: var(--fl-accent-ink);
+  font-weight: 600;
+  box-shadow: inset 0 0 0 1px var(--fl-press-ring);
+}
+
+.fl-weights-note {
+  display: inline-flex;
+  align-items: center;
+  height: 26px;
+  font-size: 11px;
+  letter-spacing: 0.02em;
+  color: var(--fl-dim);
+}
+
+.fl-card-foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: auto;
+  padding-top: 4px;
+}
+
+.fl-meta {
+  min-width: 0;
+  font-size: 11px;
+  letter-spacing: 0.02em;
+  color: var(--fl-dim);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.fl-copy {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  height: 34px;
+  padding: 0 20px;
+  border: 0;
+  border-radius: 999px;
+  background: var(--fl-copy-bg);
+  color: var(--fl-ink);
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+  transition: background 0.2s var(--fl-ease), transform 0.2s var(--fl-ease),
+    color 0.2s var(--fl-ease);
+}
+
+.fl-copy:hover {
+  background: var(--fl-copy-hover-bg);
+  color: var(--fl-copy-hover-ink);
+  transform: translateY(-1px);
+}
+
+.fl-copy:active {
+  transform: translateY(0);
+}
+
+.fl-copy[data-done="1"] {
+  background: var(--fl-copy-hover-bg);
+  color: var(--fl-copy-hover-ink);
+}
+
+/* ── 空白 / 骨架 / 错误 ───────────────────────────────── */
+
+.fl-empty,
+.fl-error {
+  padding: 80px 0;
+  text-align: center;
+  color: var(--fl-dim);
+}
+
+.fl-empty b,
+.fl-error b {
+  display: block;
+  margin-bottom: 10px;
+  font-size: 18px;
+  font-weight: 400;
+  color: var(--fl-ink);
+}
+
+.fl-error code {
+  display: inline-block;
+  margin-top: 12px;
+  padding: 8px 14px;
+  border-radius: 999px;
+  background: var(--fl-error-bg);
+  color: var(--fl-error-ink);
+  font-size: 12px;
+}
+
+.fl-skeleton {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 24px;
+}
+
+.fl-skeleton i {
+  display: block;
+  height: 168px;
+  border-radius: 18px;
+  background: linear-gradient(
+    100deg,
+    var(--fl-skeleton-a) 30%,
+    var(--fl-skeleton-b) 50%,
+    var(--fl-skeleton-a) 70%
+  );
+  background-size: 220% 100%;
+  animation: fl-shimmer 1.4s var(--fl-ease) infinite;
+}
+
+@keyframes fl-rise {
+  from {
+    opacity: 0;
+    transform: translateY(28px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fl-shimmer {
+  from {
+    background-position: 120% 0;
+  }
+  to {
+    background-position: -20% 0;
+  }
+}
+
+/* ── 窄屏 ─────────────────────────────────────────────── */
+
+@media (max-width: 980px) {
+  .fl-head {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 28px;
+    align-items: start;
+  }
+
+  .fl-stats {
+    max-width: 420px;
+  }
+
+  .fl-grid,
+  .fl-skeleton {
+    gap: 28px;
+  }
+}
+
+@media (max-width: 640px) {
+  .fl-root {
+    padding: 18px 18px 96px;
+  }
+
+  .fl-grid,
+  .fl-skeleton {
+    gap: 16px;
+  }
+
+  .fl-preview {
+    font-size: 30px;
+  }
+
+  .fl-bar {
+    gap: 8px;
+    margin-bottom: 24px;
+    padding: 10px 0;
+  }
+
+  .fl-search {
+    flex: 1 1 100%;
+  }
+
+  .fl-field,
+  .fl-toggle,
+  .fl-btn {
+    height: 38px;
+    font-size: 13px;
+  }
+
+  .fl-toggle,
+  .fl-btn {
+    padding: 0 14px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fl-card,
+  .fl-skeleton i {
+    animation: none !important;
+  }
+
+  .fl-toggle,
+  .fl-btn,
+  .fl-copy,
+  .fl-weight {
+    transition: none !important;
+  }
+}
+
+/* ── 浅色壳 ──────────────────────────────────────────────
+   整块只换变量：形状、间距、缓动都不动，只把纸从深色换成白色。
+
+   开关是 .fl-root 自己的 data-fl-scheme，由客户端量出来的（client.template.js 的
+   detectScheme）：先看宿主真发给我们的 --dsw-alias-bg-base / --dsw-alias-label-primary
+   到底亮不亮，再退到 color-scheme、dream-skin 的 scheme 属性、主题来源属性。
+   不能只看 html[data-ds-theme-source]：那是「主题偏好来源」，深色皮肤配浅色偏好时
+   它照样写 light，于是深底上套浅色字——正是之前那次显示错乱的成因。 */
+
+.fl-root[data-fl-scheme="light"] {
+  --fl-ink: #16181a;
+  --fl-ink-soft: rgba(22, 24, 26, 0.9);
+  --fl-muted: #6b6b68;
+  --fl-dim: rgba(22, 24, 26, 0.46);
+  --fl-line: rgba(0, 0, 0, 0.08);
+  --fl-surface: rgba(0, 0, 0, 0.025);
+  --fl-field: rgba(0, 0, 0, 0.04);
+  --fl-field-line: rgba(0, 0, 0, 0.1);
+  --fl-placeholder: rgba(22, 24, 26, 0.36);
+  --fl-focus-ring: rgba(29, 108, 193, 0.34);
+  --fl-tag-bg: rgba(0, 0, 0, 0.055);
+  --fl-hot-bg: rgba(0, 0, 0, 0.07);
+  --fl-hot-ink: #2f3a37;
+  --fl-weight-bg: rgba(0, 0, 0, 0.045);
+  --fl-press-ring: rgba(0, 0, 0, 0.08);
+  --fl-copy-bg: rgba(0, 0, 0, 0.045);
+  --fl-copy-hover-bg: #16181a;
+  --fl-copy-hover-ink: #f7f7f5;
+  --fl-btn-bg: #16181a;
+  --fl-btn-ink: #f7f7f5;
+  --fl-btn-hover-bg: #d8e4e1;
+  --fl-btn-hover-ink: #16181a;
+  --fl-btn-off-bg: rgba(0, 0, 0, 0.08);
+  --fl-btn-off-ink: #6b6b68;
+  --fl-skeleton-a: rgba(0, 0, 0, 0.04);
+  --fl-skeleton-b: rgba(0, 0, 0, 0.08);
+  --fl-error-bg: rgba(182, 50, 45, 0.1);
+  --fl-error-ink: #b6322d;
+  --fl-accent: #d8e4e1;
+  --fl-accent-ink: #16181a;
+  --fl-veil: 250, 250, 248;
+}
+
+/* 浅色下字重胶囊选中态的描边要变成黑线，否则浅底上的浅青胶囊没有边界 */
+.fl-root[data-fl-scheme="light"] .fl-weight[aria-pressed="true"] {
+  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.08);
+}

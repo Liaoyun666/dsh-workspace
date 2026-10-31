@@ -1,0 +1,56 @@
+import fs from 'node:fs';
+import path from 'node:path';
+import assert from 'node:assert/strict';
+import {connect} from './cdp.mjs';
+const read=p=>fs.readFileSync(p,'utf8'),local='test/fixtures/local';
+const preset=read(`${local}/dsh-client-ui-agent-preset/lib/client.js`),presetCss=JSON.parse(preset.match(/const css\$2 = ("[^\n]+")/)[1]);
+const presetMap=preset.match(/var AgentPresetSeat_module_css_default = (\{[\s\S]*?\});/)[1];
+const family=JSON.parse(presetMap);
+const html=`<!doctype html><html><head><meta charset="utf-8"><link rel="stylesheet" href="/__apc__/frontend.css"><style data-plugin-css="@deepseek-ai/dsh-client-ui-agent-preset/AgentPresetSeat.module.css">${presetCss}</style><style>html,body{margin:0;font-family:Arial,sans-serif}body{background:var(--dsw-alias-bg-base,#fafafa);color:var(--dsw-alias-label-primary,#222)}#root{position:absolute;bottom:28px;left:28px}#anchor{padding:6px 10px}</style></head><body><div id="root"></div><script>window.__PRESET_FAMILY__=${JSON.stringify(family)}</script><script type="module">import './__apc__/seed-test.js';import './__apc__/harness.js';</script></body></html>`;
+const resources=new Map([['/',[html,'text/html']],['/__apc__/harness.js',[read('test/harness.js'),'text/javascript']],...['frontend.css','seed-test.js','vendor-DcuzkuQH.js'].map(name=>[`/__apc__/${name}`,[read(`${local}/${name}`),name.endsWith('css')?'text/css':'text/javascript']])]);
+const c=await connect(),errors=[];
+c.on('Fetch.requestPaused',async e=>{try{const p=new URL(e.request.url).pathname,[body,type]=resources.get(p)||['','text/plain'];await c.send('Fetch.fulfillRequest',{requestId:e.requestId,responseCode:resources.has(p)?200:404,responseHeaders:[{name:'Content-Type',value:type}],body:Buffer.from(body).toString('base64')})}catch(e){errors.push(e.message)}});
+try {
+ await c.send('Fetch.enable',{patterns:[{urlPattern:'*'}]});await c.send('Page.enable');
+ await c.send('Page.navigate',{url:'http://127.0.0.1:55968/'});
+ await c.evaluate(`new Promise((ok,fail)=>{const deadline=Date.now()+10000;function check(){if(window.__fixtureReady)ok(true);else if(Date.now()>deadline)fail(Error('Native fixture not ready'));else setTimeout(check,50)}check()})`);
+ await c.evaluate(read('lib/client.js'));
+ const ev=c.evaluate,wait=()=>ev('new Promise(r=>setTimeout(r,80))');
+ const render=options=>ev(`renderMenu(${JSON.stringify(options)})`);
+ const resize=(width,height)=>c.send('Emulation.setDeviceMetricsOverride',{width,height,deviceScaleFactor:1,mobile:false});
+ const shot=async name=>{const {data}=await c.send('Page.captureScreenshot',{format:'png'});fs.writeFileSync(`test/artifacts/${name}.png`,Buffer.from(data,'base64'))};
+ const measure=()=>ev(`(()=>{const m=document.querySelector('[role="menu"]'),v=m.querySelector('[role="presentation"]'),b=[...m.querySelectorAll('button')],r=m.getBoundingClientRect(),s=getComputedStyle(v);return {width:r.width,height:r.height,left:r.left,top:r.top,right:r.right,bottom:r.bottom,columns:s.gridTemplateColumns.split(' ').length,scroll:v.scrollHeight>v.clientHeight,horizontal:v.scrollWidth>v.clientWidth,menuHorizontal:m.scrollWidth>m.clientWidth,order:b.map(x=>{const q=x.getBoundingClientRect();return {x:q.x,y:q.y}}),nameFont:getComputedStyle(m.querySelector('[data-apc="name"]')||m.querySelector('.${family.itemName}')).fontSize,descFont:getComputedStyle(m.querySelector('[data-apc="desc"]')||m.querySelector('.${family.itemDesc}')).fontSize}})()`);
+ await resize(1000,700);await render({count:18});await shot('native-before');
+ const nativeBefore=await measure();
+ await ev('window.release1=__APC__.__test.mount(document)');await wait();
+ console.log('STRUCT',await ev('JSON.stringify([...document.querySelector("[role=presentation]").children].map(x=>[x.tagName,x.children.length,x.lastElementChild?.tagName,x.lastElementChild?.hasAttribute("aria-haspopup")]))'));let m=await measure();console.log('DEBUG',await ev('JSON.stringify({stats:__APC__.__test.stats(document),f:__APC__.__test.family(document),html:document.querySelector("[role=menu]").outerHTML.slice(0,3000)})'));assert.equal(m.columns,2);assert.ok(m.width<=420&&m.height<=320);assert.ok(m.scroll&&!m.horizontal&&!m.menuHorizontal);assert.equal(m.nameFont,'13px');assert.equal(m.descFont,'12px');
+ assert.ok(m.order[0].x<m.order[1].x&&m.order[0].y===m.order[1].y&&m.order[2].y>m.order[0].y);await shot('compact-light');
+ console.log('PASS native double column',JSON.stringify(m));
+ // Real production core is called in the browser; no duplicate recognizer/mock DOM.
+ assert.equal(await ev('__APC__.__test.family(document).item'),family.item);
+ const stability=await ev('__APC__.__test.stats(document)');await wait();assert.deepEqual(await ev('__APC__.__test.stats(document)'),stability);
+ await ev('window.release2=__APC__.__test.mount(document)');assert.equal(await ev('__APC__.__test.stats(document).refs'),2);assert.equal(await ev('document.querySelectorAll("style[data-apc-style]").length'),1);
+ await ev('release1();release1()');assert.equal(await ev('__APC__.__test.stats(document).refs'),1);
+ await ev('setMenu("setSelected","4")');assert.equal(await ev('document.querySelectorAll("[data-apc-current=true]").length'),1);assert.equal(await ev('document.querySelector("[data-apc-current=true]").querySelector("[data-apc=name]").textContent'),'预设 5 · Agent 5');
+ await ev('document.querySelector("[data-apc=desc]").textContent="动态完整说明"');await wait();assert.equal(await ev('document.querySelector("[data-apc=desc]").title'),'动态完整说明');
+ await render({count:12});assert.equal(await ev('document.querySelectorAll("[data-apc=row]").length'),12);
+ await render({target:false,count:3});assert.equal(await ev('document.querySelectorAll("[data-apc]").length'),0);
+ const untouched=await ev('document.querySelector("[role=menu]").outerHTML');await wait();assert.equal(await ev('document.querySelector("[role=menu]").outerHTML'),untouched);
+ console.log('PASS production recognizer, non-target isolation, dynamic/current/title, repeat mount and no loop');
+ await render({count:18});await resize(540,550);await wait();m=await measure();assert.equal(m.columns,1);assert.ok(m.right<=528&&m.bottom<=538&&!m.horizontal);await shot('compact-narrow');
+ await resize(560,550);await wait();assert.equal((await measure()).columns,2);
+ await resize(320,240);await ev('document.documentElement.style.setProperty("--dsh-frame-top-clearance","42px")');await wait();m=await measure();assert.ok(m.top>=62&&m.bottom<=228&&m.width<=296&&m.height<=166&&!m.horizontal&&!m.menuHorizontal);console.log('PASS narrow/threshold/short viewport',JSON.stringify(m));await shot('compact-boundary');
+ await resize(1000,700);await ev('document.documentElement.style.removeProperty("--dsh-frame-top-clearance");document.documentElement.setAttribute("data-theme","dark");document.documentElement.style.colorScheme="dark"');await wait();await shot('compact-dark');
+ const key=async key=>{await c.send('Input.dispatchKeyEvent',{type:'keyDown',key,code:key===' '?'Space':key,windowsVirtualKeyCode:{Enter:13,Tab:9,Escape:27,ArrowDown:40,ArrowUp:38,Home:36,End:35}[key]});await c.send('Input.dispatchKeyEvent',{type:'keyUp',key,code:key});await wait()};
+ const focusIndex=()=>ev('[...document.querySelectorAll("[role=menuitem]")].indexOf(document.activeElement)');
+ await render({count:6});await ev('document.getElementById("anchor").focus()');await key('ArrowDown');assert.equal(await focusIndex(),0);await key('ArrowDown');assert.equal(await focusIndex(),1);await key('ArrowUp');assert.equal(await focusIndex(),0);await key('End');assert.equal(await focusIndex(),5);await key('Home');assert.equal(await focusIndex(),0);await key('Enter');assert.equal(await ev('__chosen.at(-1)'),'0');assert.equal(await ev('document.querySelector("[role=menu]")===null'),true);
+ await render({count:6});await ev('document.getElementById("anchor").focus()');await key('Tab');assert.equal(await focusIndex(),0);await key('Tab');assert.equal(await ev('document.querySelector("[role=menu]")===null'),true);
+ await render({count:6});await ev('document.getElementById("anchor").focus()');await key('ArrowDown');await key('Escape');assert.equal(await ev('document.activeElement.id'),'anchor');
+ console.log('PASS installed native Menu ArrowUp/Down Home End Enter Tab Escape and refocus');
+ await render({count:18});await ev('release2();release2()');await wait();assert.equal(await ev('document.querySelectorAll("[data-apc],[data-apc-current],[data-apc-style]").length'),0);assert.equal(await ev('document.querySelectorAll("[title]").length'),0);assert.equal(await ev('__APC__.__test.stats(document)'),null);assert.equal((await measure()).width,nativeBefore.width);
+ // Pre-existing titles and changed official structure are not taken over.
+ await ev('document.querySelector("[role=menu] span span span").title="原有title"');await ev('window.release3=__APC__.__test.mount(document)');assert.equal(await ev('document.querySelector("[title=原有title]")!==null'),true);await ev('release3()');assert.equal(await ev('document.querySelector("[title=原有title]")!==null'),true);
+ await ev('document.querySelector("style[data-plugin-css]").removeAttribute("data-plugin-css");window.release4=__APC__.__test.mount(document)');assert.equal(await ev('document.querySelectorAll("[data-apc]").length'),0);await ev('release4()');
+ assert.deepEqual(errors,[]);console.log('PASS cleanup restores native layout/attrs; unknown provenance fail closed');
+ fs.writeFileSync('test/artifacts/browser-result.json',JSON.stringify({passed:true,nativeBefore,lastBoundary:m,coverage:['production core','installed native Menu','double/single columns','viewport bounds','current','titles','dynamic','repeat/no-loop','non-target','keyboard','cleanup']},null,2));
+} finally {await c.close()}

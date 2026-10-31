@@ -1,0 +1,26 @@
+{
+  "owner": "your-github-name",
+  "repo": "your-public-repo",
+  "skip_names": [
+    "big-video.mp4",
+    "login-qrcode.png"
+  ],
+  "residue": [
+    "C:/Users/你的用户名",
+    "1.2.3.4"
+  ],
+  "rules": [
+    [
+      "C:[\\\\/]+Users[\\\\/]+你的用户名",
+      "C:/Users/user"
+    ],
+    [
+      "1\\.2\\.3\\.4",
+      "203.0.113.10"
+    ],
+    [
+      "(?i)你的github账号",
+      "your-github-name"
+    ]
+  ]
+}

@@ -1,0 +1,6 @@
+- insert:
+    - name: other
+      config:
+        bool: !!js true
+        code: !!js >-
+          (() => { throw new Error("NEVER EXECUTE"); })()

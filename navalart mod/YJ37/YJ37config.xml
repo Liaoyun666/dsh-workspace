@@ -1,0 +1,3 @@
+<root><config ModName="YJ37" ModType="0" Author="殘雲" Description="YJ-37 六联装超声速反舰导弹垂直发射模块" CreateTime="10_31_2026 12_31_28 AM" Version="1.0" />
+<Part Path="99037001" PartClass="Weapon" PartName="YJ-37 垂直发射模块[鹰击-37]" PartDescription="六联装通用垂直发射模块，超声速反舰导弹，射程 220 km，半穿甲战斗部。" PartNation="China" PartWeaponType="Missiles" />
+</root>

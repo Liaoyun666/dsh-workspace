@@ -1,0 +1,92 @@
+{
+  "window_seconds": {
+    "description": "@ 之后多少秒内，这个人说的话都算在跟本鱼说",
+    "type": "int",
+    "default": 180
+  },
+  "groups": {
+    "description": "只在这些群里生效（群号列表，留空=所有群）",
+    "type": "list",
+    "default": []
+  },
+  "extend_on_message": {
+    "description": "窗口内每说一句就续一期（会一直续下去）",
+    "type": "bool",
+    "default": false
+  },
+  "ambient_enable": {
+    "description": "没 @ 本鱼时也随机接话",
+    "type": "bool",
+    "default": true
+  },
+  "ambient_probability": {
+    "description": "随机接话的基础概率（群里冷清时，0~1，0.08 = 平均十几句接一次）",
+    "type": "float",
+    "default": 0.08
+  },
+  "ambient_probability_max": {
+    "description": "群里很热闹时的接话概率上限（0~1，0.35 = 平均三句就插一次嘴）",
+    "type": "float",
+    "default": 0.35
+  },
+  "ambient_activity_window": {
+    "description": "用最近多少秒的群消息条数来衡量热闹程度",
+    "type": "int",
+    "default": 600
+  },
+  "ambient_activity_full": {
+    "description": "窗口内消息达到这个条数，概率顶到上限",
+    "type": "int",
+    "default": 20
+  },
+  "ambient_cooldown": {
+    "description": "接话之后多少秒内不再接（防刷屏）",
+    "type": "int",
+    "default": 120
+  },
+  "ambient_min_len": {
+    "description": "太短的消息不接（字数下限）",
+    "type": "int",
+    "default": 2
+  },
+  "split_enable": {
+    "description": "回复拆成多条短消息发",
+    "type": "bool",
+    "default": true
+  },
+  "split_min": {
+    "description": "旧参数，现在一句一条，不再使用",
+    "type": "int",
+    "default": 1
+  },
+  "split_max": {
+    "description": "一次回复最多分几条发（多的并进最后一条）",
+    "type": "int",
+    "default": 8
+  },
+  "split_max_chars": {
+    "description": "单句超过多少字才在逗号后补救着切开（正常句子绝不切）",
+    "type": "int",
+    "default": 80
+  },
+  "split_delay_min": {
+    "description": "两条之间最少等几秒",
+    "type": "float",
+    "default": 1.0
+  },
+  "split_delay_max": {
+    "description": "两条之间最多等几秒",
+    "type": "float",
+    "default": 2.8
+  },
+  "sleep_start": {
+    "description": "睡眠开始的小时（0~23）。这个点之后不主动接话；被 @ 还是会回",
+    "type": "int",
+    "default": 0
+  },
+  "sleep_end": {
+    "description": "睡眠结束的小时（0~24）。到这个点就醒了",
+    "type": "int",
+    "default": 8
+  }
+}

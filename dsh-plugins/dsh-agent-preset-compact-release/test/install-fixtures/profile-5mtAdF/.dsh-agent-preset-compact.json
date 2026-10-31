@@ -1,0 +1,22 @@
+{
+  "schema": 1,
+  "plugin": "E:\\工作区\\dsh-agent-preset-compact-release",
+  "state": "installed",
+  "block": "# BEGIN dsh-agent-preset-compact managed v1\n- insert:\n    - id: agent-preset-compact\n      name: dsh-agent-preset-compact\n# END dsh-agent-preset-compact managed v1\n",
+  "replace": "",
+  "patchExisted": true,
+  "linkCreated": true,
+  "original": {
+    "identity": {
+      "dev": "2328990669",
+      "ino": "562949953959429",
+      "birthtimeNs": "1792758909779435100"
+    },
+    "content": "- insert:\r\n    - name: keep-me\r\n      config: { secret: fixture-only }\r\n"
+  },
+  "linkIdentity": {
+    "dev": "2328990669",
+    "ino": "562949953959434",
+    "birthtimeNs": "1792758909808434700"
+  }
+}

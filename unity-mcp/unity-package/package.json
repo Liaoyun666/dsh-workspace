@@ -1,0 +1,16 @@
+{
+  "name": "com.dsh.unitybridge",
+  "version": "0.1.0",
+  "displayName": "DSH Unity Bridge",
+  "description": "Local TCP bridge that lets the DSH agent inspect and build scenes inside the Unity editor, run C# snippets and capture screenshots.",
+  "unity": "2019.4",
+  "keywords": [
+    "dsh",
+    "mcp",
+    "agent",
+    "editor"
+  ],
+  "author": {
+    "name": "DSH"
+  }
+}

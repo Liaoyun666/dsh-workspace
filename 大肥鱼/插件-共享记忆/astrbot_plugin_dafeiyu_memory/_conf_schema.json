@@ -1,0 +1,52 @@
+{
+  "inject_enable": {
+    "type": "bool",
+    "default": true,
+    "description": "回话前注入相关记忆"
+  },
+  "inject_k": {
+    "type": "int",
+    "default": 5,
+    "description": "每次最多注入几条"
+  },
+  "inject_min_score": {
+    "type": "float",
+    "default": 0.08,
+    "description": "相关度下限（0~1，越高越严）"
+  },
+  "learn_enable": {
+    "type": "bool",
+    "default": true,
+    "description": "自动从聊天里学"
+  },
+  "learn_in_group": {
+    "type": "bool",
+    "default": true,
+    "description": "群里也学"
+  },
+  "learn_in_private": {
+    "type": "bool",
+    "default": true,
+    "description": "私聊也学"
+  },
+  "learn_every_n": {
+    "type": "int",
+    "default": 25,
+    "description": "攒够多少句提炼一次"
+  },
+  "learn_min_minutes": {
+    "type": "int",
+    "default": 10,
+    "description": "两次提炼最少间隔（分钟）"
+  },
+  "learn_max_per_round": {
+    "type": "int",
+    "default": 3,
+    "description": "每次最多提炼几条"
+  },
+  "max_items": {
+    "type": "int",
+    "default": 800,
+    "description": "记忆库上限条数"
+  }
+}

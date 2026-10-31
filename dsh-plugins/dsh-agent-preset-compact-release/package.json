@@ -1,0 +1,17 @@
+{
+  "name": "dsh-agent-preset-compact",
+  "version": "0.1.0",
+  "description": "独立紧凑 Agent preset 菜单：短说明、双列与原生交互保持。",
+  "type": "module",
+  "main": "lib/index.js",
+  "exports": {".": "./lib/index.js", "./client": "./lib/client.js", "./package.json": "./package.json"},
+  "dsh": {"bundle": {"patch": "./cordis.patch.yml"}, "client": {"platform": "web"}},
+  "files": ["lib", "tools/install.mjs", "tools/vendor", "cordis.patch.yml", "LICENSE", "README.md", "docs"],
+  "scripts": {
+    "check": "node --check lib/index.js && node --check lib/client.js && node --check tools/install.mjs",
+    "test": "node --test test/install.test.mjs",
+    "test:browser": "node test/browser.mjs"
+  },
+  "engines": {"node": ">=22"},
+  "license": "MIT"
+}

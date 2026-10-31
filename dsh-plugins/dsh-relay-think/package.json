@@ -1,0 +1,81 @@
+{
+  "name": "dsh-relay-think",
+  "version": "1.0.0",
+  "description": "为 DSH 的中转站（llm-pi-ai）模型声明并切换思考强度：在 Models 页为每个模型写入 reasoningEfforts，并在输入框旁提供一键思考档位切换。A reasoning-effort manager for relay/proxy (pi-ai) models in DeepSeek Harness.",
+  "author": "ZF",
+  "type": "module",
+  "main": "lib/index.js",
+  "exports": {
+    ".": {
+      "default": "./lib/index.js"
+    },
+    "./client": {
+      "default": "./lib/client.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "dsh": {
+    "client": {
+      "platform": "web"
+    }
+  },
+  "files": [
+    "lib",
+    "tools",
+    "cordis.patch.yml",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "test": "node --test test/plan.test.mjs test/client.test.mjs test/host.test.mjs",
+    "check": "node --check lib/index.js && node --check lib/plan.js && node --check lib/client.js && node --check tools/install.mjs"
+  },
+  "keywords": [
+    "deepseek",
+    "deepseek-harness",
+    "dsh",
+    "dsh-plugin",
+    "client-plugin",
+    "relay",
+    "proxy",
+    "reasoning",
+    "thinking",
+    "effort",
+    "pi-ai"
+  ],
+  "license": "MIT",
+  "engines": {
+    "node": ">=20"
+  },
+  "dshhub": {
+    "schemaVersion": 1,
+    "displayName": "dsh-relay-think",
+    "summary": "为 DSH 中转站模型声明/切换思考强度：Models 页逐模型写入 reasoningEfforts，输入框旁一键切档。",
+    "categories": [
+      "模型",
+      "Web UI",
+      "设置"
+    ],
+    "surfaces": [
+      "host",
+      "web"
+    ],
+    "capabilities": {
+      "provides": [
+        "ui:settings.models.provider-card",
+        "ui:conversation.input.right",
+        "http:/relay-think/state",
+        "http:/relay-think/apply"
+      ],
+      "reads": [
+        "settings:llm-pi-ai",
+        "llm:resolveModelInfo"
+      ],
+      "network": []
+    },
+    "compatibility": {
+      "dsh": ">=0.1.5-rc.1",
+      "node": ">=20"
+    }
+  }
+}

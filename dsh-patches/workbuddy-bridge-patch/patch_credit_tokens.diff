@@ -1,0 +1,589 @@
+--- client.js.bak
++++ client.js.patched
+@@ -869,18 +869,14 @@
+ 			* Read the status document and apply it.
+ 			* @returns whether this read produced the document now on screen.
+ 			*/
+-			const read = (0, react.useCallback)(async (signal) => {
++			const read = (0, react.useCallback)(async (signal, force) => {
+ 				const seq = ++readSeq.current;
+ 				const current = () => mounted.current && signal?.aborted !== true && seq === readSeq.current;
+ 				try {
+-					const response = await fetch(variant.statusPath, {
+-						headers: { accept: "application/json" },
+-						credentials: "same-origin",
+-						...signal === void 0 ? {} : { signal }
++					const value = await readStatusShared(variant.statusPath, {
++						force,
++						invalidMessage: t("statusResponseInvalid")
+ 					});
+-					const value = await response.json().catch(() => void 0);
+-					if (!response.ok) throw new Error(`HTTP ${response.status}`);
+-					if (!isWorkBuddyWebStatus(value)) throw new Error(t("statusResponseInvalid"));
+ 					if (!current()) return false;
+ 					setStatus(value);
+ 					if (value.status === "signed-in") signedOut.current = false;
+@@ -928,12 +924,12 @@
+ 					if (!response.ok) throw new Error(errorMessage(value, response.status));
+ 					if (action.action === "set-model-visibility" && fieldOf(value, "state") !== "updated") {
+ 						if (fieldOf(value, "state") === "stale-account") {
+-							await read(controller.signal);
++							await read(controller.signal, true);
+ 							throw new Error(t("visibilityStaleAccount"));
+ 						}
+ 						throw new Error(fieldOf(value, "reason") ?? t("requestFailed"));
+ 					}
+-					await read(controller.signal);
++					await read(controller.signal, true);
+ 				} catch (error) {
+ 					if (mounted.current && controller.signal.aborted !== true) setReadFailure(error instanceof Error ? error.message : t("requestFailed"));
+ 				} finally {
+@@ -975,7 +971,7 @@
+ 				setBusy(true);
+ 				const controller = track();
+ 				try {
+-					await read(controller.signal);
++					await read(controller.signal, true);
+ 				} finally {
+ 					inFlight.current.delete(controller);
+ 					if (mounted.current) setBusy(false);
+@@ -1361,6 +1357,10 @@
+ 			creditConsumedTitle: "Credit this message consumed, as reported by WorkBuddy",
+ 			creditRemainingUnlimited: "Unlimited",
+ 			creditBalanceTitle: "Remaining credit on your {product} account",
++			tokenEstimate: "≈ {tokens} tokens",
++			tokenEstimateRate: "×{rate}",
++			tokenEstimateTitle: "{model} · {product} credit left, times this model's multiplier, converted into the tokens it still pays for (rough estimate; cached input is not billed)",
++			tokenEstimateFree: "free model — spends no credit",
+ 			freeModel: "Free",
+ 			badgeLimitedFree: "Limited-time free",
+ 			badgeNightDiscount: "Night discount",
+@@ -1476,6 +1476,10 @@
+ 			creditConsumedTitle: "本条消息消耗的积分（由 WorkBuddy 返回）",
+ 			creditRemainingUnlimited: "不限额",
+ 			creditBalanceTitle: "{product} 账号剩余积分",
++			tokenEstimate: "≈ {tokens} tokens",
++			tokenEstimateRate: "×{rate}",
++			tokenEstimateTitle: "{model} · {product} 剩余积分乘当前模型倍率后，大约还能跑多少 token（粗估；命中缓存的输入不计费）",
++			tokenEstimateFree: "免费模型，不消耗积分",
+ 			freeModel: "免费",
+ 			badgeLimitedFree: "限时免费",
+ 			badgeNightDiscount: "夜间折扣",
+@@ -1812,14 +1816,10 @@
+ 			const readSeq = (0, react.useRef)(0);
+ 			const refresh = (0, react.useCallback)(async (signal) => {
+ 				const seq = ++readSeq.current;
+-				const response = await fetch(card.statusPath, {
+-					credentials: "same-origin",
+-					headers: { accept: "application/json" },
+-					...signal === void 0 ? {} : { signal }
++				const value = await readStatusShared(card.statusPath, {
++					force: signal === void 0,
++					invalidMessage: t("statusResponseInvalid")
+ 				});
+-				if (!response.ok) throw new Error(`HTTP ${response.status}`);
+-				const value = await response.json().catch(() => void 0);
+-				if (!isWorkBuddyWebStatus(value)) throw new Error(t("statusResponseInvalid"));
+ 				if (mounted.current && signal?.aborted !== true && seq === readSeq.current) setStatus(value);
+ 			}, [card.statusPath, t]);
+ 			(0, react.useEffect)(() => {
+@@ -1830,12 +1830,12 @@
+ 				};
+ 				load();
+ 				const timer = window.setInterval(load, RECONCILE_MS);
+-				window.addEventListener("focus", load);
++				const unsubscribeFocus = subscribeFocusRefresh(load);
+ 				return () => {
+ 					mounted.current = false;
+ 					controller.abort();
+ 					window.clearInterval(timer);
+-					window.removeEventListener("focus", load);
++					unsubscribeFocus();
+ 				};
+ 			}, [refresh]);
+ 			return /* @__PURE__ */ (0, react_jsx_runtime.jsx)(ModelProbe, {
+@@ -2171,47 +2171,32 @@
+ 		* when neither is showing.
+ 		*/
+ 		function useWorkBuddySessionCredits(path, sessionId, enabled) {
++			const active = enabled === true && sessionId !== void 0 && sessionId !== "";
+ 			const [credits, setCredits] = (0, react.useState)();
+-			const mounted = (0, react.useRef)(true);
+-			/** Number of the newest read allowed to write; assigned when a read starts. */
+-			const readSeq = (0, react.useRef)(0);
+-			const read = (0, react.useCallback)(async (signal) => {
+-				if (sessionId === void 0 || sessionId === "") return;
+-				const seq = ++readSeq.current;
+-				try {
+-					const response = await fetch(`${path}?sessionId=${encodeURIComponent(sessionId)}`, {
+-						credentials: "same-origin",
+-						headers: { accept: "application/json" },
+-						signal
+-					});
+-					if (!response.ok) return;
+-					const value = await response.json().catch(() => void 0);
+-					if (!isWorkBuddySessionCredits(value)) return;
+-					if (!mounted.current || signal.aborted || seq !== readSeq.current) return;
+-					setCredits(value.credits);
+-				} catch {}
+-			}, [path, sessionId]);
+ 			(0, react.useEffect)(() => {
+-				mounted.current = true;
+-				if (!enabled || sessionId === void 0 || sessionId === "") return;
+-				const controller = new AbortController();
+-				read(controller.signal);
+-				const timer = window.setInterval(() => {
+-					read(controller.signal);
+-				}, POLL_INTERVAL_MS$1);
+-				const onFocus = () => {
+-					read(controller.signal);
++				if (!active) {
++					setCredits(void 0);
++					return;
++				}
++				const store = openSessionCreditStore(path, sessionId);
++				const listener = () => {
++					setCredits(store.credits);
+ 				};
+-				window.addEventListener("focus", onFocus);
++				store.listeners.add(listener);
++				store.refs += 1;
++				setCredits(store.credits);
++				store.start();
+ 				return () => {
+-					mounted.current = false;
+-					controller.abort();
+-					window.clearInterval(timer);
+-					window.removeEventListener("focus", onFocus);
++					store.listeners.delete(listener);
++					store.refs -= 1;
++					if (store.refs <= 0) {
++						store.stop();
++						sessionCreditStores.delete(store.key);
++					}
+ 				};
+ 			}, [
+-				enabled,
+-				read,
++				active,
++				path,
+ 				sessionId
+ 			]);
+ 			return { credits };
+@@ -2276,7 +2261,7 @@
+ 		}
+ 		//#endregion
+ 		//#region \0workbuddy-css:/home/runner/work/dsh-workbuddy-bridge/dsh-workbuddy-bridge/src/client/credit-balance.module.css.js
+-		const css = ".Rbiksq_readout{white-space:nowrap;height:28px;color:var(--dsw-alias-label-tertiary);align-items:center;gap:4px;display:inline-flex}.Rbiksq_amount{font-size:calc(var(--dsh-content-font-size-secondary,13px) - 1px);font-variant-numeric:tabular-nums;line-height:1}";
++		const css = ".Rbiksq_readout{white-space:nowrap;height:28px;color:var(--dsw-alias-label-tertiary);align-items:center;gap:4px;display:inline-flex}.Rbiksq_amount{font-size:calc(var(--dsh-content-font-size-secondary,13px) - 1px);font-variant-numeric:tabular-nums;line-height:1}.Rbiksq_dock{display:flex;align-items:center;justify-content:flex-end;gap:6px;width:100%;max-width:var(--dsh-chat-content-width,720px);margin:0 auto;box-sizing:border-box;min-width:0;overflow:hidden;padding:0 calc(var(--dsh-composer-side-clearance,0px) + 16px) 4px;font-size:calc(var(--dsh-content-font-size-secondary,13px) - 2px);line-height:1.2;color:var(--dsw-alias-label-tertiary);white-space:nowrap;font-variant-numeric:tabular-nums}.Rbiksq_rate{opacity:.85}.Rbiksq_estimate{opacity:.75}@media (max-width:640px){.Rbiksq_rate{display:none}}";
+ 		const tagId = "dsh-workbuddy-bridge/credit-balance.module.css";
+ 		if (typeof document !== "undefined" && document.querySelector("style[data-plugin-css=" + JSON.stringify(tagId) + "]") === null) {
+ 			const tag = document.createElement("style");
+@@ -2287,6 +2272,9 @@
+ 		}
+ 		var credit_balance_module_css_default = {
+ 			"amount": "Rbiksq_amount",
++			"dock": "Rbiksq_dock",
++			"estimate": "Rbiksq_estimate",
++			"rate": "Rbiksq_rate",
+ 			"readout": "Rbiksq_readout"
+ 		};
+ 		//#endregion
+@@ -2335,23 +2323,275 @@
+ 		* request upstream, the figure only moves when credit is spent, and a window
+ 		* regaining focus forces a fresh read anyway.
+ 		*/
++		/**
++		* One shared reader for a variant's status document.
++		*
++		* The composer mounts several consumers of the same route - the probe control,
++		* the balance, the per-message credit label and the settings card - and every
++		* read costs one real upstream billing request. They share one read now: the
++		* first caller fetches, everyone else inside the TTL reuses the result, and a
++		* read already in flight is reused rather than duplicated.
++		*/
++		const SHARED_STATUS_TTL_MS = 6e4;
++		let sharedStatusPath = "";
++		let sharedStatusValue = void 0;
++		let sharedStatusAt = 0;
++		let sharedStatusInflight = void 0;
++		function readStatusShared(path, options = {}) {
++			const invalidMessage = options.invalidMessage ?? "invalid status response";
++			if (sharedStatusPath !== path) {
++				sharedStatusPath = path;
++				sharedStatusValue = void 0;
++				sharedStatusAt = 0;
++				sharedStatusInflight = void 0;
++			}
++			const force = options.force === true;
++			if (!force) {
++				if (sharedStatusInflight !== void 0) return sharedStatusInflight;
++				if (sharedStatusValue !== void 0 && Date.now() - sharedStatusAt < SHARED_STATUS_TTL_MS) return Promise.resolve(sharedStatusValue);
++			}
++			const promise = fetch(path, {
++				credentials: "same-origin",
++				headers: { accept: "application/json" }
++			}).then(async (response) => {
++				if (!response.ok) throw new Error(`HTTP ${response.status}`);
++				const value = await response.json().catch(() => void 0);
++				if (!isWorkBuddyWebStatus(value)) throw new Error(invalidMessage);
++				if (sharedStatusPath === path) {
++					sharedStatusValue = value;
++					sharedStatusAt = Date.now();
++				}
++				return value;
++			}).finally(() => {
++				if (sharedStatusInflight === promise) sharedStatusInflight = void 0;
++			});
++			if (!force) sharedStatusInflight = promise;
++			return promise;
++		}
++		/**
++		* Coalesce the window-focus refreshes of every consumer into one read.
++		*
++		* One alt-tab used to fire an upstream read per consumer at the same moment.
++		* This waits out the focus storm and drops repeats inside a short window.
++		*/
++		const FOCUS_DEBOUNCE_MS = 2e2;
++		const FOCUS_MIN_GAP_MS = 5e3;
++		function subscribeFocusRefresh(callback) {
++			let timer = 0;
++			let lastRun = 0;
++			const onFocus = () => {
++				window.clearTimeout(timer);
++				timer = window.setTimeout(() => {
++					const now = Date.now();
++					if (now - lastRun < FOCUS_MIN_GAP_MS) return;
++					lastRun = now;
++					callback();
++				}, FOCUS_DEBOUNCE_MS);
++			};
++			window.addEventListener("focus", onFocus);
++			return () => {
++				window.clearTimeout(timer);
++				window.removeEventListener("focus", onFocus);
++			};
++		}
++		/**
++		* What WorkBuddy charges, measured per model on this machine.
++		*
++		* Every model has its own price, so the credit multiplier alone cannot be
++		* turned into tokens: kimi-k3-1 charges ~2.2x more per token than its x1.62
++		* multiplier suggests, while the cheap GLM/DeepSeek tiers cost far less.
++		*
++		* The charge law, verified on three probes per model (worst residual 4.5%):
++		*
++		*   credit = rate * (a * output + b * freshInput + c * cachedInput)
++		*
++		* where `rate` is the multiplier the model picker shows and c = CACHE_FACTOR * b.
++		* Coefficients were fitted from real replies by differencing an input-heavy and
++		* an output-heavy probe, under least squares over three probes per model.
++		*
++		* Cross-checks against data the fit never saw:
++		*   - the datapoint documented in this bundle's source (glm-5.3, 900 output
++		*     tokens -> credit 0.51): predicted 0.504, off by 1.1%.
++		*   - 19 real replies already in this conversation: 2.40 credit charged,
++		*     2.45 predicted, off by 2%.
++		*/
++		const MODEL_CHARGE = {
++			"hy4-preview": { a: 0.000984246, b: 0.000492917 },
++			"hy3-x": { a: 0.00199484, b: 0.00034237 },
++			"space-bunny": { a: 0.000735159, b: 0.000187341 },
++			"deepseek-v4.1-flash": { a: 0.000532081, b: 0.000129795 },
++			"glm-5.3": { a: 0.000811883, b: 0.000232374 },
++			"glm-5.3-flash": { a: 0.000631008, b: 0.00018474 },
++			"glm-5.2": { a: 0.0007075, b: 0.000201728 },
++			/**
++			* glm-5.1 rejected every probe with `code 11133` (parameters rejected by
++			* the model provider), so it inherits the coefficients of its x0.79 sibling.
++			*/
++			"glm-5.1": { a: 0.0007075, b: 0.000201728 },
++			"glm-5v-turbo": { a: 0.000789865, b: 0.000211431 },
++			"minimax-m3.1-flash": { a: 0.00141848, b: 0.00035517 },
++			"minimax-m3": { a: 0.000918264, b: 0.000236911 },
++			"minimax-m2.7": { a: 0.000946343, b: 0.000238845 },
++			"kimi-k3.1-pro": { a: 0.00169888, b: 0.000324821 },
++			"kimi-k3-1": { a: 0.00149528, b: 0.000300946 },
++			"kimi-k2.8-preview": { a: 0.000848385, b: 0.000204803 },
++			"deepseek-v4-pro": { a: 0.000754692, b: 0.000251997 },
++			"mimo-v2.6-pro": { a: 0.00132426, b: 0.000659022 }
++		};
++		/**
++		* Coefficients used for a model missing from the table above.
++		*
++		* The median of the measured models, so a model added upstream tomorrow still
++		* gets a sane order of magnitude instead of no estimate at all.
++		*/
++		const DEFAULT_CHARGE = { a: 0.0008833245, b: 0.000237878 };
++		/** Output share of the billed (non-cached) tokens actually observed here. */
++		const BILLED_OUTPUT_SHARE = 0.4163;
++		/** Cached prompt reads observed per billed token. */
++		const CACHE_READ_PER_BILLED = 23.28;
++		/** A cached prompt read costs this fraction of a fresh input token. */
++		const CACHE_FACTOR = 0.02;
++		/**
++		* Read the selected model's multiplier out of the status document.
++		*
++		* The selector hands over the catalog id, which is normally the id the status
++		* document uses; the id/name fallbacks only cover a catalog that drifted.
++		*/
++		function parseCreditRate(models, modelId) {
++			if (!Array.isArray(models) || typeof modelId !== "string") return void 0;
++			const wanted = modelId.trim().toLowerCase();
++			if (wanted === "") return void 0;
++			const rateOf = (entry) => {
++				const credits = entry?.credits;
++				if (typeof credits !== "string") return void 0;
++				const rate = Number.parseFloat(credits.replace(/^x/i, "").trim());
++				return Number.isFinite(rate) ? rate : void 0;
++			};
++			const exact = models.find((candidate) => candidate?.id === modelId);
++			const byId = exact ?? models.find((candidate) => typeof candidate?.id === "string" && candidate.id.trim().toLowerCase() === wanted);
++			const byName = byId ?? models.find((candidate) => typeof candidate?.name === "string" && candidate.name.trim().toLowerCase() === wanted);
++			const byPrefix = byName ?? models.find((candidate) => typeof candidate?.id === "string" && candidate.id.trim().toLowerCase().startsWith(`${wanted}-`));
++			return rateOf(byPrefix);
++		}
++		/** Charge coefficients for a catalog id, falling back to the median model. */
++		function chargeFor(modelId) {
++			if (typeof modelId !== "string") return DEFAULT_CHARGE;
++			const wanted = modelId.trim().toLowerCase();
++			if (wanted === "") return DEFAULT_CHARGE;
++			const exact = MODEL_CHARGE[wanted];
++			if (exact !== void 0) return exact;
++			const key = Object.keys(MODEL_CHARGE).find((candidate) => candidate.startsWith(wanted) || wanted.startsWith(candidate));
++			return key === void 0 ? DEFAULT_CHARGE : MODEL_CHARGE[key];
++		}
++		/**
++		* Credits one token costs, mixing cached and fresh input the way this machine
++		* actually uses the models (58% input, 42% output, 23 cached reads per token).
++		*/
++		function creditsPerToken(rate, modelId) {
++			const charge = chargeFor(modelId);
++			return rate * (charge.a * BILLED_OUTPUT_SHARE
++				+ charge.b * (1 - BILLED_OUTPUT_SHARE)
++				+ CACHE_FACTOR * charge.b * CACHE_READ_PER_BILLED);
++		}
++		function estimateTokensFromCredits(total, rate, modelId) {
++			if (!Number.isFinite(total) || rate === void 0) return void 0;
++			if (rate <= 0) return Number.POSITIVE_INFINITY;
++			return total / creditsPerToken(rate, modelId);
++		}
++		const tokenEstimateFormat = new Intl.NumberFormat(void 0, {
++			notation: "compact",
++			maximumFractionDigits: 1
++		});
++		function formatTokenEstimate(tokens) {
++			if (!Number.isFinite(tokens)) return "\u221E";
++			return tokenEstimateFormat.format(Math.max(0, Math.round(tokens)));
++		}
++		function modelNameFor(models, modelId) {
++			if (!Array.isArray(models) || typeof modelId !== "string") return "WorkBuddy";
++			const entry = models.find((candidate) => candidate?.id === modelId);
++			return typeof entry?.name === "string" ? entry.name : modelId;
++		}
++		/**
++		* One poll per (route, session) shared by every message row in the transcript.
++		*
++		* The per-message credit label used to own a timer each: a conversation with
++		* forty answers kept forty intervals alive, all hitting the same route every
++		* thirty seconds and all reading it again on every window focus. The rows only
++		* ever want the same map, so they subscribe to one store instead. The store
++		* stops polling when the last subscriber unmounts.
++		*/
++		const sessionCreditStores = /* @__PURE__ */ new Map();
++		function openSessionCreditStore(path, sessionId) {
++			const key = `${path}\u0000${sessionId}`;
++			const existing = sessionCreditStores.get(key);
++			if (existing !== void 0) return existing;
++			const store = {
++				key,
++				credits: void 0,
++				listeners: /* @__PURE__ */ new Set(),
++				refs: 0,
++				abort: void 0,
++				timer: 0,
++				unsubscribeFocus: void 0,
++				readSeq: 0,
++				read() {
++					const seq = ++store.readSeq;
++					const controller = store.abort;
++					if (controller === void 0) return;
++					fetch(`${path}?sessionId=${encodeURIComponent(sessionId)}`, {
++						credentials: "same-origin",
++						headers: { accept: "application/json" },
++						signal: controller.signal
++					}).then(async (response) => {
++						if (!response.ok) return;
++						const value = await response.json().catch(() => void 0);
++						if (!isWorkBuddySessionCredits(value)) return;
++						if (controller.signal.aborted || seq !== store.readSeq) return;
++						store.credits = value.credits;
++						for (const listener of store.listeners) listener();
++					}).catch(() => {});
++				},
++				start() {
++					if (store.abort !== void 0) return;
++					store.abort = new AbortController();
++					store.read();
++					store.timer = window.setInterval(() => {
++						store.read();
++					}, POLL_INTERVAL_MS$1);
++					store.unsubscribeFocus = subscribeFocusRefresh(() => {
++						store.read();
++					});
++				},
++				stop() {
++					const controller = store.abort;
++					store.abort = void 0;
++					if (controller !== void 0) controller.abort();
++					window.clearInterval(store.timer);
++					store.timer = 0;
++					if (store.unsubscribeFocus !== void 0) {
++						store.unsubscribeFocus();
++						store.unsubscribeFocus = void 0;
++					}
++					store.readSeq += 1;
++				}
++			};
++			sessionCreditStores.set(key, store);
++			return store;
++		}
+ 		const POLL_INTERVAL_MS = 12e4;
+ 		/** Read one variant's status route and reduce it to a balance. */
+ 		async function readBalance(card, signal) {
+ 			try {
+-				const response = await fetch(card.statusPath, {
+-					credentials: "same-origin",
+-					headers: { accept: "application/json" },
+-					signal
++				const value = await readStatusShared(card.statusPath, {
++					invalidMessage: "invalid status response"
+ 				});
+-				if (!response.ok) return { kind: "unknown" };
+-				const value = await response.json().catch(() => void 0);
+ 				if (!isWorkBuddyWebStatus(value) || value.status !== "signed-in") return { kind: "unknown" };
+ 				const credits = value.credits;
+ 				if (credits === void 0) return { kind: "unknown" };
+ 				return credits.unlimited === true ? { kind: "unlimited" } : {
+ 					kind: "total",
+-					total: credits.total
++					total: credits.total,
++					models: value.models
+ 				};
+ 			} catch {
+ 				return { kind: "unknown" };
+@@ -2385,26 +2625,40 @@
+ 				const timer = window.setInterval(() => {
+ 					read();
+ 				}, POLL_INTERVAL_MS);
+-				const onFocus = () => {
++				const unsubscribeFocus = subscribeFocusRefresh(() => {
+ 					read();
+-				};
+-				window.addEventListener("focus", onFocus);
++				});
+ 				return () => {
+ 					mounted.current = false;
+ 					controller.abort();
+ 					window.clearInterval(timer);
+-					window.removeEventListener("focus", onFocus);
++					unsubscribeFocus();
+ 				};
+ 			}, [card]);
+ 			if (card === void 0 || balance.kind === "unknown") return null;
+ 			const figure = balance.kind === "unlimited" ? t("creditRemainingUnlimited") : formatCredit(balance.total);
+-			return /* @__PURE__ */ (0, react_jsx_runtime.jsxs)("span", {
+-				className: credit_balance_module_css_default.readout,
+-				title: t("creditBalanceTitle", { product: card.appName }),
+-				children: [/* @__PURE__ */ (0, react_jsx_runtime.jsx)(CoinGlyph, {}), /* @__PURE__ */ (0, react_jsx_runtime.jsx)("span", {
+-					className: credit_balance_module_css_default.amount,
+-					children: figure
+-				})]
++			const modelId = selection === null ? void 0 : selection.model;
++			const rate = balance.kind === "total" ? parseCreditRate(balance.models, modelId) : void 0;
++			const tokens = balance.kind === "total" ? estimateTokensFromCredits(balance.total, rate, modelId) : void 0;
++			const items = [/* @__PURE__ */ (0, react_jsx_runtime.jsx)(CoinGlyph, {}), /* @__PURE__ */ (0, react_jsx_runtime.jsx)("span", {
++				className: credit_balance_module_css_default.amount,
++				children: figure
++			})];
++			if (rate !== void 0) items.push(/* @__PURE__ */ (0, react_jsx_runtime.jsx)("span", {
++				className: credit_balance_module_css_default.rate,
++				children: t("tokenEstimateRate", { rate: formatCredit(rate) })
++			}));
++			if (tokens !== void 0) items.push(/* @__PURE__ */ (0, react_jsx_runtime.jsx)("span", {
++				className: credit_balance_module_css_default.estimate,
++				children: Number.isFinite(tokens) ? t("tokenEstimate", { tokens: formatTokenEstimate(tokens) }) : t("tokenEstimateFree")
++			}));
++			return /* @__PURE__ */ (0, react_jsx_runtime.jsxs)("div", {
++				className: credit_balance_module_css_default.dock,
++				title: t("tokenEstimateTitle", {
++					model: modelNameFor(balance.models, modelId),
++					product: card.appName
++				}),
++				children: items
+ 			});
+ 		}
+ 		//#endregion
+@@ -2532,6 +2786,13 @@
+ 		*/
+ 		const BALANCE_SEAT_ID = "workbuddy-credit-balance";
+ 		/**
++		* The full-width seat above the composer card.
++		*
++		* A `list` seat owned by the conversation, so the credit readout gets a whole
++		* row to itself and the model picker keeps its compact row for the probe icon.
++		*/
++		const DOCK_SEAT = "conversation.input.dock";
++		/**
+ 		* The assistant message's action strip — the row holding copy, the plugin
+ 		* actions, branch and the usage pill.
+ 		*
+@@ -2559,31 +2820,23 @@
+ 				locale: NS,
+ 				inject: () => config.inject()
+ 			}, WorkBuddyConfigPage))), "dsh-workbuddy-bridge: configuration page");
+-			ctx.inject(["modelDirectories"], (scope) => {
+-				scope.slots.inject(PROBE_SEAT, () => {
+-					const releaseProbe = scope.slots.register({
+-						name: PROBE_SEAT,
+-						id: PROBE_SEAT_ID,
+-						inject: (sessionId) => ({
+-							directory: scope.modelDirectories.directoryFor(sessionId).store,
+-							t
+-						})
+-					}, WorkBuddyProbeControl);
+-					const releaseBalance = scope.slots.register({
+-						name: PROBE_SEAT,
+-						id: BALANCE_SEAT_ID,
+-						order: -10,
+-						inject: (sessionId) => ({
+-							directory: scope.modelDirectories.directoryFor(sessionId).store,
+-							t
+-						})
+-					}, WorkBuddyCreditBalance);
+-					return () => {
+-						releaseBalance();
+-						releaseProbe();
+-					};
+-				});
+-			});
++			ctx.inject(["modelDirectories"], (scope) => scope.slots.inject(PROBE_SEAT, () => scope.slots.register({
++				name: PROBE_SEAT,
++				id: PROBE_SEAT_ID,
++				inject: (sessionId) => ({
++					directory: scope.modelDirectories.directoryFor(sessionId).store,
++					t
++				})
++			}, WorkBuddyProbeControl)));
++			ctx.inject(["modelDirectories"], (scope) => scope.slots.inject(DOCK_SEAT, () => scope.slots.register({
++				name: DOCK_SEAT,
++				id: BALANCE_SEAT_ID,
++				order: 4,
++				inject: (sessionId) => ({
++					directory: scope.modelDirectories.directoryFor(sessionId).store,
++					t
++				})
++			}, WorkBuddyCreditBalance)));
+ 			ctx.inject(["modelDirectories"], (scope) => scope.slots.inject(MESSAGE_ACTIONS_SEAT, () => scope.slots.register({
+ 				name: MESSAGE_ACTIONS_SEAT,
+ 				id: CREDIT_LABEL_SEAT_ID,

@@ -1,0 +1,19 @@
+{
+  "relayUrl": "",
+  "deviceName": "",
+  "deviceKind": "mobile",
+  "autostart": true,
+  "localExec": true,
+  "heartbeatSeconds": 20,
+  "pollSeconds": 25,
+  "idleBackoffAfterSeconds": 180,
+  "idleBackoffMaxSeconds": 120,
+  "syncMode": "manual",
+  "notifyOnTask": true,
+  "notifyOnResult": true,
+  "vibrateOnTask": false,
+  "bridgeUrl": "http://127.0.0.1:3090",
+  "bridgeTokenPath": "/root/.dsh/.bridge_token",
+  "appPackage": "",
+  "appUrl": ""
+}

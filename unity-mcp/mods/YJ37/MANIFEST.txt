@@ -1,0 +1,26 @@
+YJ-37 mod package manifest
+generated: 2026-10-31 00:36 (Asia/Shanghai)  —— v3 重打包后
+
+交付目录 E:\工作区\navalart mod\YJ37\   —— 只有游戏要读的 4 个文件
+工程目录 E:\工作区\unity-mcp\mods\YJ37\ —— source/ renders/ README.md 本文件
+
+yj37.namod              1459190 bytes  1f09efbe6535524da2a995b717a3d3537c3907f578e0292318a1b0188763bb9c
+yj37.namod.manifest         947 bytes  a43c74bcf84577fa6306aa827081c329c214ad962d8b3c8681c1a0543f226756
+YJ37config.xml              440 bytes  2ebae108a8a2594940c7793f1d0fcf9f853be4ce6e16cbea58ff221012bc10e4
+Preview.png               24338 bytes  e9f5213409321f55136b3912b85fbc474f9fe4199dfe3f5c618a7232a72a7c35
+
+model: v3 —— 两级 + 承波体弹头，腹部进气罩已按主人手工改动删除（8 子件之外无 Intake）
+bundle: built 2026-10-31 00:31 -> v3 外形（导弹全长 8.55 m，渲染 bounds 1.5 x 8.6 x 1.5）
+        内含 assets/modbuild_99037001/99037001.prefab + assets/resources/p99037001.png
+        prefab: children=67 renderers=132；内嵌导弹 prefab: renderers=11、lights=0、cameras=0
+        已清除建模阶段残留的 Studio 影棚（3 盏实时灯 x 7 套 = 21 盏），bundle 内 0 灯 0 相机
+installed: E:\SteamLibrary\steamapps\common\NavalArt\NavalArt_Data\Mods\YJ37 —— 4 个文件与上面哈希完全一致
+runtime: 2026-10-31 00:33 启动游戏 34 s 后 Player.log 出现
+         "Imported mod from local: ...\Mods\YJ37 with AB name: yj37.namod and 1 parts"
+check: check-deliverable.mjs PASS（无 warn：4 个文件与已安装副本全 SAME）
+        注意 check-mod.mjs 是给**工程/打包源**用的，对纯交付目录跑会报缺 namod/config（那里只有 4 个成品），属正常
+
+重打顺序（Unity 开着、桥 127.0.0.1:6401 可用）：
+  yj37_vls_build.cs -> yj37_vls_icons.cs -> yj37_pack.cs
+  若之前跑过带灯光的渲染脚本，先跑技能的 templates/strip-lights.cs.txt 清 Studio/灯，
+  否则 21 盏实时灯会进 bundle（见技能 pitfalls #37、硬规矩 13）

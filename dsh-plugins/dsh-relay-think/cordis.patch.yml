@@ -1,0 +1,16 @@
+# dsh-relay-think bundle patch —— 在 profile 上插入一行宿主插件。
+#
+# 该行做两件事：
+#   1. 给 Loader 一个宿主条目（lib/index.js：/relay-think/state 与 /apply 两条 JSON 路由）；
+#   2. 让 client-modules 扫描到这个包：package.json 声明了 dsh.client，
+#      于是 lib/client.js 被编进浏览器模块图（Models 提供商卡片 + 输入框思考档位胶囊）。
+#
+# 转站设置命名空间默认是 llm-pi-ai；如你的 profile 把该行的 id 改成了别的名字，
+# 在 profile 自己的 cordis.patch.yml 里按 id 覆写本行：
+#
+#   - id: relay-think
+#     config:
+#       settingsNs: my-llm-pi-ai
+- insert:
+    - id: relay-think
+      name: dsh-relay-think

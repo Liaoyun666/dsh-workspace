@@ -1,0 +1,13 @@
+{
+  "description": "Antigravity 简体中文界面注入器（连接本地调试端口，注入并维护界面翻译）",
+  "command": "C:\\\\Windows\\\\System32\\\\WindowsPowerShell\\\\v1.0\\\\powershell.exe",
+  "args": [
+    "-NoProfile",
+    "-ExecutionPolicy",
+    "Bypass",
+    "-File",
+    "injector.ps1"
+  ],
+  "restart_policy": "always",
+  "display_name": "简体中文界面"
+}

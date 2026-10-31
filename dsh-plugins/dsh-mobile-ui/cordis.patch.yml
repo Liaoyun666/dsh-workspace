@@ -1,0 +1,5 @@
+# dsh-mobile-ui：让 DSH 网页在手机 / 平板上好用一点。
+# 纯浏览器侧插件（lib/index.js 是空壳，只为了能被 cordis 按名字加载）。
+- insert:
+    - id: mobile-ui
+      name: dsh-mobile-ui

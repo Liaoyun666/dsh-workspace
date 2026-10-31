@@ -1,0 +1,20 @@
+{
+  "ssh_key": "C:/Users/user/.ssh/id_ed25519",
+  "ssh_host": "root@203.0.113.10",
+  "remote_root": "/opt/dafeiyu/astrbot-data/data/dsh-jobs",
+  "jobs_root": "E:/工作区/肥鱼之家/jobs",
+  "dsh_exe": "E:/Deepseek/DeepSeek Harness.exe",
+  "dsh_cli_js": "E:/Deepseek/resources/app.asar/dsh/node_modules/@deepseek-ai/dsh-desktop-host/lib/cli.js",
+  "credentials": "C:/Users/user/.dsh/.credentials.yaml",
+  "api_key_name": "DEEPSEEK_API_KEY",
+  "ffmpeg_bin": "C:/Users/user/AppData/Local/ffmpeg/bin",
+  "poll_interval": 15,
+  "job_timeout": 3300,
+  "ssh_timeout": 60,
+  "keep_job_dirs": 20,
+  "text_job_timeout": 900,
+  "vendor_py": "E:/工作区/肥鱼之家/.vendor/py",
+  "heartbeat_interval": 20,
+  "toolkit_dir": "E:/工作区/肥鱼之家/toolkit",
+  "send_intermediates": false
+}

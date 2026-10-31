@@ -1,0 +1,8 @@
+{
+  "base_url": "http://127.0.0.1:6185",
+  "username": "astrbot",
+  "password": "填你的后台密码",
+  "owner_qq": "100000000",
+  "memory": "0",
+  "voice": "1"
+}

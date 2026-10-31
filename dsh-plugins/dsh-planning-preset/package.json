@@ -1,0 +1,68 @@
+{
+  "name": "dsh-planning-preset",
+  "version": "1.0.0",
+  "description": "DeepSeek Harness 规划 Agent 预设：主 Leader 只规划与审查（只读工具面），执行全部委派给独立执行子 Agent。A planning-leader agent preset for the DeepSeek Harness Web GUI.",
+  "author": "ZF",
+  "type": "module",
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    }
+  },
+  "files": [
+    "cordis.patch.yml",
+    "tools",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "install:preset": "node tools/install.mjs",
+    "status": "node tools/install.mjs --status",
+    "uninstall:preset": "node tools/install.mjs --uninstall"
+  },
+  "keywords": [
+    "deepseek",
+    "deepseek-harness",
+    "dsh",
+    "dsh-plugin",
+    "agent-preset",
+    "planning",
+    "planner",
+    "orchestrator",
+    "chinese"
+  ],
+  "license": "MIT",
+  "engines": {
+    "node": ">=20"
+  },
+  "dshhub": {
+    "schemaVersion": 1,
+    "displayName": "规划 Agent 预设",
+    "summary": "只规划与审查的 Leader 预设：只读工具面 + 计划先行 + 审查，执行全部交给独立执行子 Agent（executor 预设）。",
+    "categories": [
+      "Agent 预设",
+      "协作"
+    ],
+    "surfaces": [
+      "host"
+    ],
+    "capabilities": {
+      "provides": [
+        "agent-preset:planning",
+        "agent-preset:executor"
+      ],
+      "reads": [
+        "fs",
+        "skills",
+        "session:events"
+      ],
+      "network": [
+        "*"
+      ]
+    },
+    "compatibility": {
+      "dsh": ">=0.2.0-rc.2",
+      "node": ">=20"
+    }
+  }
+}

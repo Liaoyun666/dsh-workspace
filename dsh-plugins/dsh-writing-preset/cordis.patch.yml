@@ -1,0 +1,96 @@
+# dsh-writing-preset bundle patch —— 声明「写作」Agent preset（preset id: writing）。
+#
+# 这份子插件列表就是写作 agent 的完整能力面：写作人设、写作技能、
+# 文件与检索工具、文档交付（present）、上下文压缩。
+#
+# 安装方式见 README：
+#   · patch 模式（默认，热生效）：tools/install.mjs 把本文件内容原样追加进
+#     profile 的 cordis.patch.yml；
+#   · bundle 模式（--bundle，需重启）：本文件成为 profile 的一层 bundle patch。
+#
+# 技能目录通过 profile 的 node_modules 定位本包（安装器建立的 junction），
+# 因此本文件被复制进 profile 补丁层后依然指向本包目录下的 skills/。
+- insert:
+    - id: preset-writing
+      name: '@deepseek-ai/dsh-agent-preset'
+      config:
+        id: writing
+        order: 0
+        name: 写作
+        description: 面向长文、报告、文案与文档交付的写作 agent：先澄清需求，再调研取证、先纲后稿、逐轮改稿，可交付 Markdown 与 Word/PPT/Excel 文件。
+        plugins:
+          - id: persona
+            name: '@deepseek-ai/dsh-persona'
+            config:
+              prefix: |-
+                你是一位专业的中文写作助手，兼任编辑与调研员：擅长长文、报告、提案、文案、改稿润色，以及用 Word/PPT/Excel 交付成稿。你的文字应当准确、清楚、有信息密度，而不是辞藻堆砌。
+
+                默认工作原则：
+                - 动手前先确认读者、目的、篇幅、语气与交付格式；影响成稿的关键缺口，用 ask_user_question 一次问清，其余按合理默认继续，不要反复追问。
+                - 先结构后文字：长文先给提纲（用 todo_write 跟踪阶段），确认或说明结构后再逐节展开；用户明确要求直接出稿时，先用一两句话说明结构再写。
+                - 事实优先：人物、数据、时间、引语与政策必须可核查，用 web_search / web_fetch 查证并注明来源；查不到就标注「待核实」，绝不编造。
+                - 中文表达遵循出版规范：一段一个中心，多用短句，删掉套话、空话与重复；术语首次出现写全称；使用中文标点，数字、英文术语与单位按惯例处理。
+                - 改稿是独立步骤：从事实、结构、逻辑、语气、冗余、错别字六个维度检查，必要时说明改了什么、为什么改，而不是静默重写。
+                - 成稿写入工作区文件；需要 Word/PPT/Excel 时先加载对应 office 技能；交付时用 present 附上文件，并给出路径与要点摘要。
+                - 用户用哪种语言写作就用哪种语言；没有明确要求时用简体中文。避免 emoji 与浮夸修辞，除非用户明确要求。
+              suffix: Your working directory is the workspace root given in the runtime context.
+          - id: agent-instructions
+            name: '@deepseek-ai/dsh-agent-instructions'
+            config:
+              maxBytes: 65536
+          - id: tool-bash
+            name: '@deepseek-ai/dsh-tool-bash'
+            disabled: !!js process.platform === 'win32'
+          - id: tool-pwsh
+            name: '@deepseek-ai/dsh-tool-pwsh'
+            disabled: !!js process.platform !== 'win32'
+          - id: tool-fs
+            name: '@deepseek-ai/dsh-tool-fs'
+          - id: tool-fs-search
+            name: '@deepseek-ai/dsh-tool-fs-search'
+            config:
+              sampleOverCapGlobResults: false
+          - id: tool-jobs
+            name: '@deepseek-ai/dsh-tool-jobs'
+          - id: skill-filesystem
+            name: '@deepseek-ai/dsh-skill-filesystem'
+            config:
+              bundledSkillDir: !!js >-
+                process.getBuiltinModule('node:path').join(
+                  process.getBuiltinModule('node:path').dirname(
+                    process.getBuiltinModule('node:module').createRequire(baseUrl).resolve('dsh-writing-preset/package.json')
+                  ),
+                  'skills'
+                )
+          - id: tool-skill
+            name: '@deepseek-ai/dsh-tool-skill'
+          - id: tool-ask-user
+            name: '@deepseek-ai/dsh-tool-ask-user'
+          - id: tool-todo
+            name: '@deepseek-ai/dsh-tool-todo'
+            config:
+              allowParallelInProgress: true
+          - id: tool-web
+            name: '@deepseek-ai/dsh-tool-web'
+            config:
+              fetch: true
+              searchTimeoutMs: 60000
+          - id: present
+            name: '@deepseek-ai/dsh-tool-present'
+          - id: compaction
+            name: cordis:group
+            group: true
+            isolate:
+              compaction: true
+              toolResultPruner: true
+            config:
+              - id: compaction-basic
+                name: '@deepseek-ai/dsh-compaction-basic'
+              - id: command-compact
+                name: '@deepseek-ai/dsh-command-compact'
+              - id: tool-result-pruner
+                name: '@deepseek-ai/dsh-compaction-tool-result-pruner'
+                config:
+                  thresholdChars: 8192
+                  headChars: 4096
+                  tailChars: 1024

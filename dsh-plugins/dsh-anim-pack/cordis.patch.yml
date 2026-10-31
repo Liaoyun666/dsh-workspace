@@ -1,0 +1,12 @@
+# dsh-anim-pack：把 341 种代码动画风格提示词做成常驻的本地素材包。
+#
+# 宿主侧插件（无 client 代码）：启动时挂 7 个 anim_* 工具，素材库在本包的
+# assets/library/ 里，默认直接读它；要换库就把 config.libraryPath 指过去。
+#
+# 安装（在 profile 里登记 + 建 junction）：
+#   node tools/install.mjs --profile-dir "C:/Users/user\.dsh\profiles\desktop"
+# 卸载：
+#   node tools/install.mjs --remove
+- insert:
+    - id: anim-pack
+      name: dsh-anim-pack

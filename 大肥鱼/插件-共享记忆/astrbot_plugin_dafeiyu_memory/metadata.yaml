@@ -1,0 +1,7 @@
+name: astrbot_plugin_dafeiyu_memory
+display_name: 大肥鱼共享记忆
+short_desc: QQ 大肥鱼与刷B站大肥鱼共用的记忆库：自动学群聊、注入记忆、刷B站也记账
+desc: 一个记忆库两个插件共用。群聊/私聊攒够一段自动提炼值得记住的事实；每次回话前把相关记忆临时注入；刷B站插件刷到视频、发动态、发评论也写进同一份记忆。
+author: 大肥鱼
+version: 1.0.0
+repo: https://github.com/your-github-name/AI

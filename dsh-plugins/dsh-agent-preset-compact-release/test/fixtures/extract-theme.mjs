@@ -1,0 +1,5 @@
+import fs from 'node:fs';
+import crypto from 'node:crypto';
+const source='E:/Deepseek/resources/app.asar',fd=fs.openSync(source,'r'),prefix=Buffer.alloc(16);fs.readSync(fd,prefix,0,16,0);const header=Buffer.alloc(prefix.readUInt32LE(12));fs.readSync(fd,header,0,header.length,16);const tree=JSON.parse(header.toString());
+const name='dsh/node_modules/@deepseek-ai/dsh-client-ui-theme/lib/client.js';let entry=tree;for(const part of name.split('/'))entry=entry.files?.[part];if(!entry)throw Error('Official theme ASAR entry missing');const bytes=Buffer.alloc(entry.size);fs.readSync(fd,bytes,0,bytes.length,8+prefix.readUInt32LE(4)+Number(entry.offset));fs.closeSync(fd);fs.writeFileSync('test/fixtures/local/theme-client.js',bytes);
+const manifest=JSON.parse(fs.readFileSync('test/fixtures/provenance.json','utf8'));manifest.files.push({name:'theme-client.js',source:source+'!/'+name,sha256:crypto.createHash('sha256').update(bytes).digest('hex'),bytes:bytes.length});fs.writeFileSync('test/fixtures/provenance.json',JSON.stringify(manifest,null,2));console.log('OFFICIAL_THEME_EXTRACTED',bytes.length,manifest.files.at(-1).sha256);

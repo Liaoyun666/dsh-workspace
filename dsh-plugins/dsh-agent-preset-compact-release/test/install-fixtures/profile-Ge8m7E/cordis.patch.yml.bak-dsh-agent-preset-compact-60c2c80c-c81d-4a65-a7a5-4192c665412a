@@ -1,0 +1,7 @@
+- insert:
+    - name: other
+# BEGIN dsh-agent-preset-compact managed v1
+- insert:
+    - id: agent-preset-compact
+      name: dsh-agent-preset-compact
+# END dsh-agent-preset-compact managed v1

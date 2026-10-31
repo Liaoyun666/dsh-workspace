@@ -1,0 +1,3 @@
+- insert:
+    - id: agent-preset-compact
+      name: dsh-agent-preset-compact

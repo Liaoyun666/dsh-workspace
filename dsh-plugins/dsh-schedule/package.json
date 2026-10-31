@@ -1,0 +1,35 @@
+{
+  "name": "dsh-schedule",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Unified scheduler for DeepSeek Harness: remind tasks (at / every / daily / cron, fire a prompt into the chat) and timed goals (pin permission + arm a /goal at a moment, run it automatically). One plugin, one store, one drawer.",
+  "type": "module",
+  "main": "lib/index.js",
+  "exports": {
+    ".": "./lib/index.js",
+    "./client": "./lib/client.js",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "lib/",
+    "cordis.patch.yml",
+    "README.md"
+  ],
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    },
+    "client": {
+      "platform": "web",
+      "immediately": true
+    }
+  },
+  "peerDependencies": {
+    "cordis": "*",
+    "react": "^18.2.0 || ^19.0.0"
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "license": "MIT"
+}
